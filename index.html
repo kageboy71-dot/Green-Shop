@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Green Shop - Modern Global E-Commerce Platform</title>
+    <title>Green Shop - Modern E-Commerce Platform</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -73,7 +73,39 @@
     serviceModal: false,
     chatInput: '',
     chatMessages: [],
-    items: [],
+    items: [
+        // 1. APPAREL & WEARABLES (Unique & Non-repetitive)
+        { id: 1, cat: 'apparel', title: 'Casual Cotton Organic T-Shirt', priceUSD: 14, img: 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=500', liked: false, fav: false },
+        { id: 2, cat: 'apparel', title: 'Classic Button-Down Oxford Shirt', priceUSD: 28, img: 'https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=500', liked: false, fav: false },
+        { id: 3, cat: 'apparel', title: 'Slim Fit Blue Denim Jeans', priceUSD: 36, img: 'https://images.unsplash.com/photo-1542272604-780c36856842?w=500', liked: false, fav: false },
+        { id: 4, cat: 'apparel', title: 'Myanmar Silk Longyi & Traditional Dress', priceUSD: 45, img: 'https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?w=500', liked: false, fav: false },
+        { id: 5, cat: 'apparel', title: 'Elegant Evening Floral Gown', priceUSD: 68, img: 'https://images.unsplash.com/photo-1566174053879-31528523f8ae?w=500', liked: false, fav: false },
+        { id: 6, cat: 'apparel', title: 'Thermal Winter Fleece Coat', priceUSD: 58, img: 'https://images.unsplash.com/photo-1551028719-00167b16eac5?w=500', liked: false, fav: false },
+        { id: 7, cat: 'apparel', title: 'Soft Cotton Nightwear Pajama Set', priceUSD: 24, img: 'https://images.unsplash.com/photo-1578632767115-351597cf2477?w=500', liked: false, fav: false },
+        { id: 8, cat: 'apparel', title: 'Streetwear Oversized Hoodie Jacket', priceUSD: 42, img: 'https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=500', liked: false, fav: false },
+
+        // 2. FASHION ACCESSORIES & FOOTWEAR (Unique & Non-repetitive)
+        { id: 9, cat: 'fashion', title: 'Urban Athletic Running Sneakers', priceUSD: 54, img: 'https://images.unsplash.com/photo-1549298916-b41d501d3772?w=500', liked: false, fav: false },
+        { id: 10, cat: 'fashion', title: 'Stiletto High-Heel Party Shoes', priceUSD: 48, img: 'https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=500', liked: false, fav: false },
+        { id: 11, cat: 'fashion', title: 'Vintage Handcrafted Leather Backpack', priceUSD: 62, img: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=500', liked: false, fav: false },
+        { id: 12, cat: 'fashion', title: 'Polarized UV400 Protection Sunglasses', priceUSD: 19, img: 'https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=500', liked: false, fav: false },
+        { id: 13, cat: 'fashion', title: 'Luxury Automatic Mechanical Wrist Watch', priceUSD: 88, img: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500', liked: false, fav: false },
+        { id: 14, cat: 'fashion', title: 'Premium Black Leather Waist Belt', priceUSD: 16, img: 'https://images.unsplash.com/photo-1624222247344-550fb60583dc?w=500', liked: false, fav: false },
+        { id: 15, cat: 'fashion', title: 'Designer Canvas Travel Tote Bag', priceUSD: 38, img: 'https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=500', liked: false, fav: false },
+        { id: 16, cat: 'fashion', title: 'Gold Plated Pendant Jewelry Necklace', priceUSD: 32, img: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=500', liked: false, fav: false },
+
+        // 3. HOME TEXTILES (Unique & Non-repetitive)
+        { id: 17, cat: 'textiles', title: 'Luxury Egyptian Cotton Bedding Set', priceUSD: 75, img: 'https://images.unsplash.com/photo-1616627547584-bf28cee262db?w=500', liked: false, fav: false },
+        { id: 18, cat: 'textiles', title: 'Ultra-Soft Microfiber Bath Towels', priceUSD: 22, img: 'https://images.unsplash.com/photo-1616627547024-814144038a83?w=500', liked: false, fav: false },
+        { id: 19, cat: 'textiles', title: 'Living Room Blackout Window Curtains', priceUSD: 40, img: 'https://images.unsplash.com/photo-1513694203232-719a280e022f?w=500', liked: false, fav: false },
+        { id: 20, cat: 'textiles', title: 'Nordic Geometric Wool Floor Carpet', priceUSD: 49, img: 'https://images.unsplash.com/photo-1600121848594-d8644e57abab?w=500', liked: false, fav: false },
+
+        // 4. NON-FOOD GENERAL GOODS (Unique & Non-repetitive)
+        { id: 21, cat: 'general', title: 'Hydrating Botanical Skin Care Kit', priceUSD: 35, img: 'https://images.unsplash.com/photo-1556228720-195a672e8a03?w=500', liked: false, fav: false },
+        { id: 22, cat: 'general', title: 'Luxury French Fragrance Spray Perfume', priceUSD: 60, img: 'https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=500', liked: false, fav: false },
+        { id: 23, cat: 'general', title: 'Organic Lavender Body Wash & Shampoo', priceUSD: 16, img: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=500', liked: false, fav: false },
+        { id: 24, cat: 'general', title: 'Eco Laundry Liquid Detergent Gel', priceUSD: 15, img: 'https://images.unsplash.com/photo-1610557892470-55d9e80c0bce?w=500', liked: false, fav: false }
+    ],
     initLiveChat() {
         if(this.chatMessages.length === 0) {
             this.chatMessages.push({
@@ -95,77 +127,26 @@
             }, 1000);
         }
     },
-    generate200UniqueProducts() {
-        const categories = ['apparel', 'fashion', 'textiles', 'general'];
-        const uniqueApparel = [
-            { t: 'Casual Cotton T-Shirt', img: 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=500' },
-            { t: 'Classic Oxford Button Shirt', img: 'https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=500' },
-            { t: 'Slim Fit Denim Jeans', img: 'https://images.unsplash.com/photo-1542272604-780c36856842?w=500' },
-            { t: 'Myanmar Silk Longyi & Outfit', img: 'https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?w=500' },
-            { t: 'Elegant Evening Floral Gown', img: 'https://images.unsplash.com/photo-1566174053879-31528523f8ae?w=500' },
-            { t: 'Thermal Winter Fleece Jacket', img: 'https://images.unsplash.com/photo-1551028719-00167b16eac5?w=500' },
-            { t: 'Soft Cotton Nightwear Pajamas', img: 'https://images.unsplash.com/photo-1578632767115-351597cf2477?w=500' },
-            { t: 'Streetwear Graphic Oversized Hoodie', img: 'https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=500' },
-            { t: 'Vintage Leather Biker Jacket', img: 'https://images.unsplash.com/photo-1520975954732-35dd22299614?w=500' },
-            { t: 'Summer Breathable Linen Shorts', img: 'https://images.unsplash.com/photo-1591195853828-11db59a44f6b?w=500' }
-        ];
-
-        const uniqueFashion = [
-            { t: 'Urban Streetwear Running Sneakers', img: 'https://images.unsplash.com/photo-1549298916-b41d501d3772?w=500' },
-            { t: 'Stiletto High-Heel Party Shoes', img: 'https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=500' },
-            { t: 'Handcrafted Vintage Leather Backpack', img: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=500' },
-            { t: 'Polarized UV400 Protection Sunglasses', img: 'https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=500' },
-            { t: 'Luxury Automatic Quartz Wrist Watch', img: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500' },
-            { t: 'Premium Genuine Leather Belt', img: 'https://images.unsplash.com/photo-1624222247344-550fb60583dc?w=500' },
-            { t: 'Travel Tote Handbag', img: 'https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=500' },
-            { t: 'Minimalist Canvas Skater Shoes', img: 'https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?w=500' },
-            { t: 'Luxury Gold Plated Pendant Necklace', img: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=500' },
-            { t: 'Classic Formal Silk Necktie', img: 'https://images.unsplash.com/photo-1589756823695-278bc923f962?w=500' }
-        ];
-
-        const uniqueTextiles = [
-            { t: 'Luxury 100% Egyptian Cotton Bedding Set', img: 'https://images.unsplash.com/photo-1616627547584-bf28cee262db?w=500' },
-            { t: 'Ultra-Soft Microfiber Bath Towel Set', img: 'https://images.unsplash.com/photo-1616627547024-814144038a83?w=500' },
-            { t: 'Modern Living Room Blackout Curtains', img: 'https://images.unsplash.com/photo-1513694203232-719a280e022f?w=500' },
-            { t: 'Nordic Geometric Wool Floor Carpet', img: 'https://images.unsplash.com/photo-1600121848594-d8644e57abab?w=500' },
-            { t: 'Soft Plush Sofa Cover Sheet', img: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=500' },
-            { t: 'Pure Silk Anti-Friction Pillowcases', img: 'https://images.unsplash.com/photo-1584100936595-c0654b55a2e2?w=500' }
-        ];
-
-        const uniqueGeneral = [
-            { t: 'Hydrating Botanical Skin Care Set', img: 'https://images.unsplash.com/photo-1556228720-195a672e8a03?w=500' },
-            { t: 'Luxury French EDP Spray Perfume', img: 'https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=500' },
-            { t: 'Organic Lavender Body Wash & Shampoo', img: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=500' },
-            { t: 'Eco Laundry Liquid Detergent Gel', img: 'https://images.unsplash.com/photo-1610557892470-55d9e80c0bce?w=500' },
-            { t: 'Herbal Toothpaste & Bamboo Brush Set', img: 'https://images.unsplash.com/photo-1559599238-308793637427?w=500' },
-            { t: 'Deep Moisturizing Body Lotion', img: 'https://images.unsplash.com/photo-1608248597261-83325805435f?w=500' }
-        ];
-
-        let result = [];
-        let idCounter = 1;
-
-        for (let i = 0; i < 50; i++) {
-            let item = uniqueApparel[i % uniqueApparel.length];
-            result.push({ id: idCounter++, cat: 'apparel', title: item.t + ' (Style ' + (i+1) + ')', priceUSD: Math.floor(Math.random() * 40) + 15, img: item.img, liked: false, fav: false });
+    handleFileUpload(event, type) {
+        const file = event.target.files[0];
+        if (file) {
+            const mediaUrl = URL.createObjectURL(file);
+            this.chatMessages.push({
+                sender: 'user',
+                text: type === 'photo' ? '📷 ဓာတ်ပုံ ပို့လိုက်ပါသည်:' : '🎥 ဗီဒီယို ဖိုင် ပို့လိုက်ပါသည်:',
+                media: mediaUrl,
+                mediaType: type
+            });
+            setTimeout(() => {
+                this.chatMessages.push({
+                    sender: 'bot',
+                    text: 'လူကြီးမင်း ပို့လိုက်သော ' + (type === 'photo' ? 'ဓာတ်ပုံ' : 'ဗီဒီယို') + ' ကို ရရှိပါပြီရှင့်။ စစ်ဆေးပေးနေပါသည်။'
+                });
+            }, 1000);
         }
-        for (let i = 0; i < 50; i++) {
-            let item = uniqueFashion[i % uniqueFashion.length];
-            result.push({ id: idCounter++, cat: 'fashion', title: item.t + ' (Edition ' + (i+1) + ')', priceUSD: Math.floor(Math.random() * 60) + 20, img: item.img, liked: false, fav: false });
-        }
-        for (let i = 0; i < 50; i++) {
-            let item = uniqueTextiles[i % uniqueTextiles.length];
-            result.push({ id: idCounter++, cat: 'textiles', title: item.t + ' (Series ' + (i+1) + ')', priceUSD: Math.floor(Math.random() * 50) + 18, img: item.img, liked: false, fav: false });
-        }
-        for (let i = 0; i < 50; i++) {
-            let item = uniqueGeneral[i % uniqueGeneral.length];
-            result.push({ id: idCounter++, cat: 'general', title: item.t + ' (Vol ' + (i+1) + ')', priceUSD: Math.floor(Math.random() * 35) + 10, img: item.img, liked: false, fav: false });
-        }
-
-        this.items = result;
     },
     init() {
-        this.generate200UniqueProducts();
-        setTimeout(() => { this.splash = false; }, 3200);
+        setTimeout(() => { this.splash = false; }, 3000);
     },
     toggleDarkMode() {
         this.darkMode = !this.darkMode;
@@ -259,27 +240,27 @@
                 <li>
                     <button @click="currentTab = 'products'; activeCategory = 'all'" 
                             :class="activeCategory === 'all' ? 'bg-[#e8f5e9] dark:bg-gray-700 text-[#2e7d32] dark:text-emerald-300 font-bold' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'"
-                            class="w-full text-left px-3 py-2 rounded-lg transition" x-text="lang === 'MY' ? 'ပစ္စည်းအားလုံး (200)' : 'All Products (200)'"></button>
+                            class="w-full text-left px-3 py-2 rounded-lg transition" x-text="lang === 'MY' ? 'ပစ္စည်းအားလုံး' : 'All Products'"></button>
                 </li>
                 <li>
                     <button @click="currentTab = 'products'; activeCategory = 'apparel'" 
                             :class="activeCategory === 'apparel' ? 'bg-[#e8f5e9] dark:bg-gray-700 text-[#2e7d32] dark:text-emerald-300 font-bold' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'"
-                            class="w-full text-left px-3 py-2 rounded-lg transition" x-text="lang === 'MY' ? 'အဝတ်အထည်များ (50)' : 'Apparel & Wearables (50)'"></button>
+                            class="w-full text-left px-3 py-2 rounded-lg transition" x-text="lang === 'MY' ? 'အဝတ်အထည်များ (Apparel)' : 'Apparel & Wearables'"></button>
                 </li>
                 <li>
                     <button @click="currentTab = 'products'; activeCategory = 'fashion'" 
                             :class="activeCategory === 'fashion' ? 'bg-[#e8f5e9] dark:bg-gray-700 text-[#2e7d32] dark:text-emerald-300 font-bold' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'"
-                            class="w-full text-left px-3 py-2 rounded-lg transition" x-text="lang === 'MY' ? 'ဖက်ရှင်နှင့် ဖိနပ်များ (50)' : 'Fashion & Footwear (50)'"></button>
+                            class="w-full text-left px-3 py-2 rounded-lg transition" x-text="lang === 'MY' ? 'ဖက်ရှင်နှင့် ဖိနပ်များ (Fashion)' : 'Fashion & Accessories'"></button>
                 </li>
                 <li>
                     <button @click="currentTab = 'products'; activeCategory = 'textiles'" 
                             :class="activeCategory === 'textiles' ? 'bg-[#e8f5e9] dark:bg-gray-700 text-[#2e7d32] dark:text-emerald-300 font-bold' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'"
-                            class="w-full text-left px-3 py-2 rounded-lg transition" x-text="lang === 'MY' ? 'အိမ်သုံး အထည်အလိပ် (50)' : 'Home Textiles (50)'"></button>
+                            class="w-full text-left px-3 py-2 rounded-lg transition" x-text="lang === 'MY' ? 'အိမ်သုံး အထည်အလိပ် (Home Textiles)' : 'Home Textiles'"></button>
                 </li>
                 <li>
                     <button @click="currentTab = 'products'; activeCategory = 'general'" 
                             :class="activeCategory === 'general' ? 'bg-[#e8f5e9] dark:bg-gray-700 text-[#2e7d32] dark:text-emerald-300 font-bold' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'"
-                            class="w-full text-left px-3 py-2 rounded-lg transition" x-text="lang === 'MY' ? 'လူသုံးကုန်ပစ္စည်းများ (50)' : 'General Goods (50)'"></button>
+                            class="w-full text-left px-3 py-2 rounded-lg transition" x-text="lang === 'MY' ? 'လူသုံးကုန်ပစ္စည်းများ (General Goods)' : 'General Goods'"></button>
                 </li>
             </ul>
         </aside>
@@ -291,11 +272,11 @@
             <div x-show="currentTab === 'home' || currentTab === 'products'">
                 <div class="bg-gradient-to-r from-[#2e7d32] via-[#1b5e20] to-[#0d3b12] text-white rounded-2xl p-6 md:p-10 shadow-md mb-8">
                     <h2 class="text-2xl md:text-4xl font-extrabold mb-3" x-text="lang === 'MY' ? 'Green Shop သို့ ကြိုဆိုပါတယ်' : 'Welcome to Green Shop'"></h2>
-                    <p class="text-emerald-100 text-sm md:text-base max-w-xl mb-4" x-text="lang === 'MY' ? 'အကောင့်မဖွင့်ဘဲ ပစ္စည်း ၂၀၀ အားလုံးကို လွတ်လပ်စွာ လေ့လာနိုင်ပါသည်။' : 'Explore all 200 items freely.'"></p>
+                    <p class="text-emerald-100 text-sm md:text-base max-w-xl mb-4" x-text="lang === 'MY' ? 'အကောင့်မဖွင့်ဘဲ ပစ္စည်းများကို လွတ်လပ်စွာ လေ့လာနိုင်ပါသည်။' : 'Explore all items freely.'"></p>
                     <span class="text-xs bg-[#1b5e20] text-white px-3 py-1 rounded-full font-semibold shadow-sm">( Exchange Rate: 1 USD = 4,500 MMK )</span>
                 </div>
 
-                <!-- 200 UNIQUE PRODUCTS GRID -->
+                <!-- 24 UNIQUE PRODUCTS GRID -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                     <template x-for="item in items" :key="item.id">
                         <div x-show="(activeCategory === 'all' || activeCategory === item.cat) && (searchQuery === '' || item.title.toLowerCase().includes(searchQuery.toLowerCase()))" 
@@ -427,24 +408,34 @@
             <div class="flex-1 p-4 overflow-y-auto space-y-3 bg-gray-50 dark:bg-gray-900">
                 <template x-for="(msg, index) in chatMessages" :key="index">
                     <div :class="msg.sender === 'user' ? 'flex justify-end' : 'flex justify-start'">
-                        <div :class="msg.sender === 'user' ? 'bg-[#2e7d32] text-white rounded-l-xl rounded-tr-xl' : 'bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 border border-gray-200 dark:border-gray-700 rounded-r-xl rounded-tl-xl'" class="max-w-[80%] p-3 text-sm shadow-sm">
+                        <div :class="msg.sender === 'user' ? 'bg-[#2e7d32] text-white rounded-l-xl rounded-tr-xl' : 'bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 border border-gray-200 dark:border-gray-700 rounded-r-xl rounded-tl-xl'" class="max-w-[80%] p-3 text-sm shadow-sm space-y-2">
                             <p x-text="msg.text"></p>
+                            <template x-if="msg.media && msg.mediaType === 'photo'">
+                                <img :src="msg.media" class="rounded-lg max-h-40 w-full object-cover border border-white/20">
+                            </template>
+                            <template x-if="msg.media && msg.mediaType === 'video'">
+                                <video :src="msg.media" controls class="rounded-lg max-h-40 w-full border border-white/20"></video>
+                            </template>
                         </div>
                     </div>
                 </template>
             </div>
 
+            <!-- Hidden Real File Inputs -->
+            <input type="file" id="photoInput" accept="image/*" class="hidden" @change="handleFileUpload($event, 'photo')">
+            <input type="file" id="videoInput" accept="video/*" class="hidden" @change="handleFileUpload($event, 'video')">
+
             <!-- Chat Input Controls -->
             <div class="p-3 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 flex items-center gap-2">
-                <!-- Media Buttons -->
-                <button onclick="alert('ဓာတ်ပုံ ပို့ရန် စနစ် ချိတ်ဆက်ထားပါသည်')" class="p-2 text-gray-500 hover:text-[#2e7d32] text-lg" title="Send Image">📷</button>
-                <button onclick="alert('ဗီဒီယို ဖိုင် ပို့ရန် စနစ် ချိတ်ဆက်ထားပါသည်')" class="p-2 text-gray-500 hover:text-[#2e7d32] text-lg" title="Send Video">🎥</button>
+                <!-- Media Buttons (Triggers Real File Pickers) -->
+                <button onclick="document.getElementById('photoInput').click()" class="p-2 text-gray-500 hover:text-[#2e7d32] text-lg" title="Send Image">📷</button>
+                <button onclick="document.getElementById('videoInput').click()" class="p-2 text-gray-500 hover:text-[#2e7d32] text-lg" title="Send Video">🎥</button>
                 
                 <!-- Input Box -->
                 <input type="text" x-model="chatInput" @keyup.enter="sendMessage()" placeholder="စာရိုက်ပါ..." class="flex-1 p-2 text-sm border rounded-lg dark:bg-gray-700 dark:border-gray-600 focus:outline-none focus:ring-1 focus:ring-[#2e7d32]">
                 
-                <!-- Clear Button -->
-                <button @click="chatInput = ''" class="p-2 text-gray-400 hover:text-red-500 text-sm" title="Clear Text">🧹</button>
+                <!-- Red Cross Clear Button -->
+                <button @click="chatInput = ''" class="p-2 text-red-500 font-extrabold hover:text-red-700 text-base" title="Clear Text">✖</button>
                 
                 <!-- Send Button -->
                 <button @click="sendMessage()" class="bg-[#2e7d32] text-white px-3 py-2 rounded-lg text-sm font-bold hover:bg-[#1b5e20]">Send</button>
