@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Green Shop - E-Commerce Platform</title>
+    <title>Green Shop - Modern Global E-Commerce Platform</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -26,7 +26,6 @@
     </script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <style>
-        /* Green Bubble Background Style matching Image 1 */
         .green-bubble-bg {
             background: radial-gradient(circle at 20% 20%, #81c784 0%, #388e3c 40%, #1b5e20 80%, #0d3b12 100%);
             position: relative;
@@ -73,7 +72,7 @@
     searchQuery: '',
     serviceModal: false,
     init() {
-        setTimeout(() => { this.splash = false; }, 3200);
+        setTimeout(() => { this.splash = false; }, 3000);
     },
     toggleDarkMode() {
         this.darkMode = !this.darkMode;
@@ -88,33 +87,28 @@
     <!-- SPLASH SCREEN (Green Bubble Background + Leaf Drop Logo) -->
     <div x-show="splash" x-transition:leave="transition ease-in duration-700 transform opacity-0" class="fixed inset-0 green-bubble-bg z-[100] flex flex-col items-center justify-center text-white p-4">
         
-        <!-- Animated Background Bubbles (Image 1 Style) -->
+        <!-- Animated Background Bubbles -->
         <div class="bubble w-64 h-64 -top-10 -left-10" style="animation-delay: 0s;"></div>
         <div class="bubble w-40 h-40 top-1/2 right-5" style="animation-delay: 1s;"></div>
         <div class="bubble w-28 h-28 bottom-10 left-1/3" style="animation-delay: 2s;"></div>
         <div class="bubble w-16 h-16 top-1/4 left-1/2" style="animation-delay: 1.5s;"></div>
         <div class="bubble w-20 h-20 bottom-1/4 right-1/4" style="animation-delay: 0.5s;"></div>
 
-        <!-- Center 3D Logo & Welcome Text (Image 2 Style) -->
+        <!-- Center 3D Logo & Welcome Text -->
         <div class="relative z-10 text-center flex flex-col items-center animate-logo-in">
-            <!-- 3D Water Drop & Leaf SVG Icon -->
             <div class="w-28 h-28 md:w-36 md:h-36 bg-white/90 rounded-full flex items-center justify-center shadow-2xl p-4 border-4 border-emerald-300 mb-4 backdrop-blur-md">
                 <svg viewBox="0 0 100 100" class="w-full h-full">
-                    <!-- Outer Leaf Shape -->
                     <path d="M 20 50 C 20 20, 50 15, 80 25 C 85 55, 65 85, 35 80 C 25 78, 20 65, 20 50 Z" fill="#2e7d32"/>
                     <path d="M 30 55 C 30 30, 55 25, 75 35 C 80 60, 60 75, 40 72 Z" fill="#4caf50"/>
-                    <!-- Center Water Drop -->
                     <path d="M 50 25 C 50 25, 68 50, 68 62 C 68 72, 60 80, 50 80 C 40 80, 32 72, 32 62 C 32 50, 50 25, 50 25 Z" fill="#81c784"/>
                     <ellipse cx="45" cy="55" rx="4" ry="8" fill="#ffffff" opacity="0.6" transform="rotate(-20 45 55)"/>
                 </svg>
             </div>
 
-            <!-- Green shop Title Text -->
             <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight text-white drop-shadow-lg mb-2">
                 Green <span class="text-emerald-200">shop</span>
             </h1>
 
-            <!-- Welcome Subtitle -->
             <p class="text-emerald-100 text-base md:text-xl font-medium tracking-wide animate-pulse">
                 Welcome to Green Shop
             </p>
@@ -124,7 +118,7 @@
     <!-- MAIN NAVBAR -->
     <nav class="bg-[#2e7d32] text-white sticky top-0 z-40 shadow-md">
         <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
-            <!-- Brand Logo (Image 2 Leaf Drop Style) -->
+            <!-- Brand Logo -->
             <div class="flex items-center space-x-2 cursor-pointer" @click="currentTab = 'home'; activeCategory = 'all'">
                 <div class="w-9 h-9 bg-white rounded-full flex items-center justify-center p-1 shadow">
                     <svg viewBox="0 0 100 100" class="w-full h-full">
@@ -138,7 +132,7 @@
             <!-- Search Bar -->
             <div class="hidden md:flex flex-1 max-w-md mx-6">
                 <input type="text" x-model="searchQuery" 
-                       :placeholder="lang === 'MY' ? 'Shop ID၊ ပစ္စည်းအမည် ရှာဖွေပါ...' : 'Search Shop ID or Product...'" 
+                       :placeholder="lang === 'MY' ? 'Shop ID သို့မဟုတ် ပစ္စည်းရှာဖွေပါ...' : 'Search Shop ID or Product...'" 
                        class="w-full px-4 py-2 rounded-l-lg text-gray-800 focus:outline-none">
                 <button class="bg-[#1b5e20] px-4 py-2 rounded-r-lg font-bold hover:bg-[#14532d]">🔍</button>
             </div>
@@ -187,22 +181,22 @@
                 <li>
                     <button @click="currentTab = 'products'; activeCategory = 'apparel'" 
                             :class="activeCategory === 'apparel' ? 'bg-[#e8f5e9] dark:bg-gray-700 text-[#2e7d32] dark:text-emerald-300 font-bold' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'"
-                            class="w-full text-left px-3 py-2 rounded-lg transition" x-text="lang === 'MY' ? 'ဝတ်ဆင်စရာ အဝတ်အထည်များ' : 'Apparel & Wearables'"></button>
+                            class="w-full text-left px-3 py-2 rounded-lg transition" x-text="lang === 'MY' ? 'အဝတ်အထည်များ (Apparel)' : 'Apparel & Wearables'"></button>
                 </li>
                 <li>
                     <button @click="currentTab = 'products'; activeCategory = 'fashion'" 
                             :class="activeCategory === 'fashion' ? 'bg-[#e8f5e9] dark:bg-gray-700 text-[#2e7d32] dark:text-emerald-300 font-bold' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'"
-                            class="w-full text-left px-3 py-2 rounded-lg transition" x-text="lang === 'MY' ? 'ဖက်ရှင်နှင့် ဖိနပ်များ' : 'Fashion & Footwear'"></button>
+                            class="w-full text-left px-3 py-2 rounded-lg transition" x-text="lang === 'MY' ? 'ဖက်ရှင်နှင့် ဖိနပ်များ (Fashion)' : 'Fashion & Accessories'"></button>
                 </li>
                 <li>
                     <button @click="currentTab = 'products'; activeCategory = 'textiles'" 
                             :class="activeCategory === 'textiles' ? 'bg-[#e8f5e9] dark:bg-gray-700 text-[#2e7d32] dark:text-emerald-300 font-bold' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'"
-                            class="w-full text-left px-3 py-2 rounded-lg transition" x-text="lang === 'MY' ? 'အိမ်သုံး အထည်အလိပ်များ' : 'Home Textiles'"></button>
+                            class="w-full text-left px-3 py-2 rounded-lg transition" x-text="lang === 'MY' ? 'အိမ်သုံး အထည်အလိပ် (Home Textiles)' : 'Home Textiles'"></button>
                 </li>
                 <li>
                     <button @click="currentTab = 'products'; activeCategory = 'general'" 
                             :class="activeCategory === 'general' ? 'bg-[#e8f5e9] dark:bg-gray-700 text-[#2e7d32] dark:text-emerald-300 font-bold' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'"
-                            class="w-full text-left px-3 py-2 rounded-lg transition" x-text="lang === 'MY' ? 'လူသုံးကုန်နှင့် အထွေထွေ' : 'General Goods'"></button>
+                            class="w-full text-left px-3 py-2 rounded-lg transition" x-text="lang === 'MY' ? 'လူသုံးကုန်ပစ္စည်းများ (General Goods)' : 'General Goods'"></button>
                 </li>
             </ul>
         </aside>
@@ -218,20 +212,37 @@
                     <span class="text-xs bg-[#1b5e20] text-white px-3 py-1 rounded-full font-semibold shadow-sm">( Exchange Rate: 1 USD = 4,500 MMK )</span>
                 </div>
 
-                <!-- Products Grid -->
+                <!-- Products Grid (English Names & High Quality Images) -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" 
                      x-data="{
                     items: [
-                        { id: 1, cat: 'apparel', title: 'ပရီမီယံ တီရှပ် (Casual Cotton T-Shirt)', priceUSD: 12, img: 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=500&auto=format&fit=crop', liked: false, fav: false },
-                        { id: 2, cat: 'apparel', title: 'မြန်မာ ရိုးရာ ဝတ်စုံ (Traditional Outfit)', priceUSD: 35, img: 'https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?w=500&auto=format&fit=crop', liked: false, fav: false },
-                        { id: 3, cat: 'apparel', title: 'ဆောင်းရာသီဝတ် ဂျာကင် (Winter Jacket)', priceUSD: 45, img: 'https://images.unsplash.com/photo-1551028719-00167b16eac5?w=500&auto=format&fit=crop', liked: false, fav: false },
-                        { id: 4, cat: 'fashion', title: 'စနီကာ ဖိနပ် (Casual Sneakers)', priceUSD: 50, img: 'https://images.unsplash.com/photo-1549298916-b41d501d3772?w=500&auto=format&fit=crop', liked: false, fav: false },
-                        { id: 5, cat: 'fashion', title: 'သဘာဝ သားရေ အိတ် (Leather Handbag)', priceUSD: 40, img: 'https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=500&auto=format&fit=crop', liked: false, fav: false },
-                        { id: 6, cat: 'fashion', title: 'UV ကာကွယ် နေကာမျက်မှန် (Sunglasses)', priceUSD: 18, img: 'https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=500&auto=format&fit=crop', liked: false, fav: false },
-                        { id: 7, cat: 'textiles', title: 'ဇိမ်ခံ အိပ်ယာခင်း အစုံ (Luxury Bedding Set)', priceUSD: 60, img: 'https://images.unsplash.com/photo-1616627547584-bf28cee262db?w=500&auto=format&fit=crop', liked: false, fav: false },
-                        { id: 8, cat: 'textiles', title: 'ပျော့ပျောင်းသော ရေချိုးတဘက် (Bath Towel)', priceUSD: 15, img: 'https://images.unsplash.com/photo-1616627547024-814144038a83?w=500&auto=format&fit=crop', liked: false, fav: false },
-                        { id: 9, cat: 'general', title: 'စကင်ကဲရ် ပစ္စည်းအစုံ (Skin Care Set)', priceUSD: 30, img: 'https://images.unsplash.com/photo-1556228720-195a672e8a03?w=500&auto=format&fit=crop', liked: false, fav: false },
-                        { id: 10, cat: 'general', title: 'သဘာဝ ရေမွှေး (Luxury Perfume)', priceUSD: 55, img: 'https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=500&auto=format&fit=crop', liked: false, fav: false }
+                        // 1. APPAREL & WEARABLES
+                        { id: 1, cat: 'apparel', title: 'Casual Organic Cotton T-Shirt', priceUSD: 12, img: 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=500&auto=format&fit=crop', liked: false, fav: false },
+                        { id: 2, cat: 'apparel', title: 'Classic Button-Down Oxford Shirt', priceUSD: 28, img: 'https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=500&auto=format&fit=crop', liked: false, fav: false },
+                        { id: 3, cat: 'apparel', title: 'Myanmar Silk Longyi & Traditional Dress', priceUSD: 45, img: 'https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?w=500&auto=format&fit=crop', liked: false, fav: false },
+                        { id: 4, cat: 'apparel', title: 'Elegant Evening Floral Gown', priceUSD: 65, img: 'https://images.unsplash.com/photo-1566174053879-31528523f8ae?w=500&auto=format&fit=crop', liked: false, fav: false },
+                        { id: 5, cat: 'apparel', title: 'Thermal Winter Fleece Jacket', priceUSD: 55, img: 'https://images.unsplash.com/photo-1551028719-00167b16eac5?w=500&auto=format&fit=crop', liked: false, fav: false },
+                        { id: 6, cat: 'apparel', title: 'Soft Cotton Nightwear Pajama Set', priceUSD: 22, img: 'https://images.unsplash.com/photo-1578632767115-351597cf2477?w=500&auto=format&fit=crop', liked: false, fav: false },
+                        
+                        // 2. FASHION ACCESSORIES & FOOTWEAR
+                        { id: 7, cat: 'fashion', title: 'Unisex Urban Running Sneakers', priceUSD: 52, img: 'https://images.unsplash.com/photo-1549298916-b41d501d3772?w=500&auto=format&fit=crop', liked: false, fav: false },
+                        { id: 8, cat: 'fashion', title: 'High-Heel Stiletto Party Shoes', priceUSD: 48, img: 'https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=500&auto=format&fit=crop', liked: false, fav: false },
+                        { id: 9, cat: 'fashion', title: 'Handcrafted Genuine Leather Backpack', priceUSD: 60, img: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=500&auto=format&fit=crop', liked: false, fav: false },
+                        { id: 10, cat: 'fashion', title: 'Polarized UV400 Protection Sunglasses', priceUSD: 18, img: 'https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=500&auto=format&fit=crop', liked: false, fav: false },
+                        { id: 11, cat: 'fashion', title: 'Luxury Automatic Wrist Watch', priceUSD: 85, img: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500&auto=format&fit=crop', liked: false, fav: false },
+                        { id: 12, cat: 'fashion', title: 'Premium Leather Waist Belt', priceUSD: 16, img: 'https://images.unsplash.com/photo-1624222247344-550fb60583dc?w=500&auto=format&fit=crop', liked: false, fav: false },
+
+                        // 3. HOME TEXTILES
+                        { id: 13, cat: 'textiles', title: 'Luxury 100% Egyptian Cotton Bedding Set', priceUSD: 70, img: 'https://images.unsplash.com/photo-1616627547584-bf28cee262db?w=500&auto=format&fit=crop', liked: false, fav: false },
+                        { id: 14, cat: 'textiles', title: 'Ultra-Soft Bath & Hand Towel Set', priceUSD: 20, img: 'https://images.unsplash.com/photo-1616627547024-814144038a83?w=500&auto=format&fit=crop', liked: false, fav: false },
+                        { id: 15, cat: 'textiles', title: 'Modern Living Room Blackout Curtains', priceUSD: 38, img: 'https://images.unsplash.com/photo-1513694203232-719a280e022f?w=500&auto=format&fit=crop', liked: false, fav: false },
+                        { id: 16, cat: 'textiles', title: 'Nordic Geometric Floor Carpet', priceUSD: 45, img: 'https://images.unsplash.com/photo-1600121848594-d8644e57abab?w=500&auto=format&fit=crop', liked: false, fav: false },
+
+                        // 4. NON-FOOD GENERAL GOODS
+                        { id: 17, cat: 'general', title: 'Hydrating Botanical Skin Care Set', priceUSD: 35, img: 'https://images.unsplash.com/photo-1556228720-195a672e8a03?w=500&auto=format&fit=crop', liked: false, fav: false },
+                        { id: 18, cat: 'general', title: 'Luxury French EDP Spray Perfume', priceUSD: 58, img: 'https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=500&auto=format&fit=crop', liked: false, fav: false },
+                        { id: 19, cat: 'general', title: 'Organic Lavender Body Wash & Shampoo', priceUSD: 15, img: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=500&auto=format&fit=crop', liked: false, fav: false },
+                        { id: 20, cat: 'general', title: 'Eco-Friendly Laundry Liquid Detergent', priceUSD: 14, img: 'https://images.unsplash.com/photo-1610557892470-55d9e80c0bce?w=500&auto=format&fit=crop', liked: false, fav: false }
                     ]
                 }">
                     <template x-for="item in items" :key="item.id">
