@@ -3,35 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Green Shop - Modern E-commerce Platform</title>
+    <title>Green Shop - E-commerce Platform</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
-<body class="bg-gray-50 text-gray-800 font-sans" x-data="{ currentTab: 'home', isLoggedIn: false, shopName: '', phone: '', shopId: '', inviteCode: '' }">
+<body class="bg-gray-100 text-gray-800 font-sans" x-data="{ 
+    currentTab: 'home', 
+    isLoggedIn: false, 
+    shopName: 'Green Enterprise', 
+    phone: '09987654321', 
+    location: 'ရန်ကုန်၊ မြန်မာ',
+    shopId: 'GS-884920', 
+    inviteCode: 'INV-4921',
+    balanceUSD: 0,
+    depositModal: false,
+    withdrawModal: false
+}">
 
     <!-- Navigation Bar -->
     <nav class="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
         <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
             <div class="flex items-center space-x-2 cursor-pointer" @click="currentTab = 'home'">
-                <span class="text-2xl">🌿</span>
-                <h1 class="text-xl font-bold text-emerald-600 tracking-wide">Green Shop</h1>
+                <div class="bg-emerald-800 text-white p-2 rounded-lg text-lg font-bold">🌿</div>
+                <h1 class="text-xl font-bold text-emerald-900 tracking-wide">Green Shop</h1>
             </div>
             <div class="space-x-6 flex items-center">
-                <button @click="currentTab = 'home'" class="hover:text-emerald-600 font-medium">ပင်မစာမျက်နှာ</button>
-                <button @click="currentTab = 'products'" class="hover:text-emerald-600 font-medium">ပစ္စည်းများ</button>
+                <button @click="currentTab = 'home'" class="hover:text-emerald-700 font-medium text-gray-700">ပင်မစာမျက်နှာ</button>
+                <button @click="currentTab = 'products'" class="hover:text-emerald-700 font-medium text-gray-700">ပစ္စည်းများ</button>
                 
                 <template x-if="!isLoggedIn">
                     <div class="space-x-2">
-                        <button @click="currentTab = 'login'" class="text-emerald-600 border border-emerald-600 px-4 py-1.5 rounded-lg font-medium hover:bg-emerald-50">အကောင့်ဝင်ရန်</button>
-                        <button @click="currentTab = 'register'" class="bg-emerald-600 text-white px-4 py-1.5 rounded-lg font-medium hover:bg-emerald-700">အကောင့်ဖွင့်မည်</button>
+                        <button @click="currentTab = 'login'" class="text-emerald-800 border border-emerald-800 px-4 py-1.5 rounded-lg font-medium hover:bg-emerald-50">အကောင့်ဝင်ရန်</button>
+                        <button @click="currentTab = 'register'" class="bg-emerald-800 text-white px-4 py-1.5 rounded-lg font-medium hover:bg-emerald-900 shadow">အကောင့်ဖွင့်မည်</button>
                     </div>
                 </template>
 
                 <template x-if="isLoggedIn">
-                    <div class="flex items-center space-x-3">
-                        <span class="text-sm bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full font-semibold" x-text="shopName"></span>
-                        <button @click="isLoggedIn = false; currentTab = 'home'" class="text-red-500 text-sm hover:underline">ထွက်ရန်</button>
+                    <div class="flex items-center space-x-4">
+                        <button @click="currentTab = 'profile'" class="flex items-center space-x-2 bg-emerald-50 text-emerald-900 px-3 py-1.5 rounded-lg border border-emerald-200 font-medium hover:bg-emerald-100">
+                            <span>👤</span>
+                            <span x-text="shopName"></span>
+                        </button>
+                        <button @click="isLoggedIn = false; currentTab = 'home'" class="text-gray-500 text-sm hover:text-red-600">ထွက်ရန်</button>
                     </div>
                 </template>
             </div>
@@ -44,136 +58,255 @@
         <!-- 1. HOME TAB -->
         <div x-show="currentTab === 'home'">
             <!-- Hero Banner -->
-            <div class="bg-gradient-to-r from-emerald-600 to-teal-700 text-white rounded-2xl p-10 md:p-16 text-center shadow-lg mb-12">
-                <span class="bg-emerald-500 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">TikTok Shop Style Platform</span>
+            <div class="bg-gradient-to-r from-emerald-900 via-emerald-800 to-teal-900 text-white rounded-2xl p-8 md:p-14 text-center shadow-md mb-10">
+                <span class="bg-emerald-700/60 text-emerald-100 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider border border-emerald-600">TikTok Style E-Commerce Platform</span>
                 <h2 class="text-3xl md:text-5xl font-extrabold mt-4 mb-4">Green Shop မှ ကြိုဆိုပါတယ်</h2>
-                <p class="text-emerald-100 text-lg max-w-2xl mx-auto mb-8">ယခုပဲ အကောင့်အသစ်ဖွင့်ပြီး အထူးလက်ဆောင် **ဒေါ်လာ ၁၅ (US$15)** ကို ရယူလိုက်ပါ။ ကိုယ်ပိုင်ဆိုင်ဖြင့် အရည်အသွေးမြင့် ပစ္စည်းများကို လွယ်ကူစွာ ရောင်းဝယ်လိုက်ပါ။</p>
-                <button @click="currentTab = 'register'" class="bg-white text-emerald-700 font-bold px-8 py-3 rounded-xl shadow-md hover:bg-emerald-50 transition transform hover:-translate-y-0.5">အခမဲ့ အကောင့်ဖွင့်မည် ($15 ရယူရန်)</button>
+                <p class="text-emerald-100 text-base md:text-lg max-w-2xl mx-auto mb-8">အရည်အသွေးမြင့် ကုန်ပစ္စည်းများကို တိုက်ရိုက်ရောင်းဝယ်နိုင်သည့် သင့်၏ ကိုယ်ပိုင် စီးပွားရေး ပလက်ဖောင်း။</p>
+                
+                <template x-if="!isLoggedIn">
+                    <button @click="currentTab = 'register'" class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold px-8 py-3 rounded-xl shadow transition">ဆိုင်အကောင့် စတင်ဖွင့်မည်</button>
+                </template>
+                <template x-if="isLoggedIn">
+                    <button @click="currentTab = 'products'" class="bg-white text-emerald-900 font-bold px-8 py-3 rounded-xl shadow hover:bg-emerald-50 transition">ဈေးဝယ်ယူရန် ကြည့်မည်</button>
+                </template>
             </div>
 
             <!-- Features Grid -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 text-center">
-                    <div class="text-3xl mb-3">🎁</div>
-                    <h3 class="font-bold text-lg text-gray-800 mb-1">ဒေါ်လာ ၁၅ အလကား</h3>
-                    <p class="text-gray-500 text-sm">အကောင့်အသစ်ဖွင့်တာနဲ့ ဆုကြေးငွေ ဘောနပ်စ်ချက်ချင်းရရှိမှာပါ။</p>
-                </div>
-                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 text-center">
-                    <div class="text-3xl mb-3">⚡</div>
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 text-center">
+                    <div class="text-3xl mb-3">🆔</div>
                     <h3 class="font-bold text-lg text-gray-800 mb-1">အလိုအလျောက် ဆိုင် ID</h3>
-                    <p class="text-gray-500 text-sm">အကောင့်ဖွင့်တာနဲ့ Shop ID နဲ့ ဖိတ်ကြားကုဒ်များကို အော်တိုဖန်တီးပေးပါတယ်။</p>
+                    <p class="text-gray-500 text-sm">အကောင့်ဖွင့်သည်နှင့် သီးသန့် Shop ID နှင့် Invite Code များ စနစ်မှ ထုတ်ပေးပါသည်။</p>
                 </div>
-                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 text-center">
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 text-center">
+                    <div class="text-3xl mb-3">💳</div>
+                    <h3 class="font-bold text-lg text-gray-800 mb-1">ငွေသွင်း/ငွေထုတ် စနစ်</h3>
+                    <p class="text-gray-500 text-sm">ဆိုင်၏ လက်ကျန်ငွေများကို လွယ်ကူစွာ ငွေသွင်း/ငွေထုတ် စီမံနိုင်ပါသည်။</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 text-center">
                     <div class="text-3xl mb-3">🛍️</div>
-                    <h3 class="font-bold text-lg text-gray-800 mb-1">ခေတ်မီ ဈေးဝယ်စနစ်</h3>
-                    <p class="text-gray-500 text-sm">TikTok Shop ပုံစံမျိုး အရည်အသွေးမြင့် ကုန်ပစ္စည်းများကို လွယ်ကူစွာ ဝယ်ယူနိုင်ပါတယ်။</p>
+                    <h3 class="font-bold text-lg text-gray-800 mb-1">စျေးနှုန်းမှန် ပစ္စည်းများ</h3>
+                    <p class="text-gray-500 text-sm">အစစ်အမှန် စျေးနှုန်းများဖြင့် ပရီမီယံ ကုန်ပစ္စည်းများကို ဝယ်ယူနိုင်ပါသည်။</p>
                 </div>
             </div>
         </div>
 
         <!-- 2. PRODUCTS TAB -->
         <div x-show="currentTab === 'products'">
-            <h3 class="text-2xl font-bold text-gray-800 mb-6">လူကြိုက်များသော ကုန်ပစ္စည်းများ</h3>
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-bold text-gray-800">လူကြိုက်များသော ကုန်ပစ္စည်းများ</h3>
+                <span class="text-xs text-gray-500 bg-gray-200 px-3 py-1 rounded-full">(1 USD = 4,500 Ks)</span>
+            </div>
+            
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                 <!-- Product 1 -->
-                <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition">
-                    <div class="bg-emerald-50 h-48 flex items-center justify-center text-emerald-600 font-bold text-lg">🌿 အစိမ်းရောင် ရှပ်အင်္ကျီ</div>
-                    <div class="p-4">
-                        <h4 class="font-bold text-gray-800 text-lg">ပရီမီယံ ချည်သား ရှပ်အင်္ကျီ</h4>
-                        <p class="text-gray-500 text-sm mt-1">အမျိုးသား/အမျိုးသမီး ဝတ်ဆင်ရန် အထူးသင့်လျော်သည်</p>
-                        <div class="flex justify-between items-center mt-4">
-                            <span class="text-emerald-600 font-bold text-lg">၂၅,၀၀၀ ကျပ်</span>
-                            <button onclick="alert('ခြင်းတောင်းထဲသို့ ထည့်ပြီးပါပြီ')" class="bg-emerald-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-emerald-700">ဝယ်မည်</button>
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition flex flex-col">
+                    <img src="https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=500&auto=format&fit=crop" class="h-56 w-full object-cover" alt="Organic Cotton Shirt">
+                    <div class="p-4 flex-1 flex flex-col justify-between">
+                        <div>
+                            <h4 class="font-bold text-gray-800 text-lg">ပရီမီယံ ချည်သား ရှပ်အင်္ကျီ</h4>
+                            <p class="text-gray-500 text-sm mt-1">အဆင့်မြင့် ချည်သား 100% ဖြင့် ပြုလုပ်ထားသော ခေတ်မီအင်္ကျီ</p>
+                        </div>
+                        <div class="mt-4 pt-3 border-t border-gray-100 flex justify-between items-center">
+                            <div>
+                                <div class="text-emerald-800 font-bold text-lg">90,000 ကျပ်</div>
+                                <div class="text-xs text-gray-400">$20.00 USD</div>
+                            </div>
+                            <button onclick="alert('ခြင်းတောင်းထဲသို့ ထည့်ပြီးပါပြီ')" class="bg-emerald-800 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-emerald-900">ဝယ်မည်</button>
                         </div>
                     </div>
                 </div>
+
                 <!-- Product 2 -->
-                <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition">
-                    <div class="bg-emerald-50 h-48 flex items-center justify-center text-emerald-600 font-bold text-lg">🎒 သဘာဝ လက်ပ်တော့အိတ်</div>
-                    <div class="p-4">
-                        <h4 class="font-bold text-gray-800 text-lg">ရေစိုခံ ခရီးဆောင်အိတ်</h4>
-                        <p class="text-gray-500 text-sm mt-1">ခိုင်ခန့်ပြီး ပစ္စည်းဆံ့သော ဒီဇိုင်းဆန်းအိတ်</p>
-                        <div class="flex justify-between items-center mt-4">
-                            <span class="text-emerald-600 font-bold text-lg">၄၅,၀၀၀ ကျပ်</span>
-                            <button onclick="alert('ခြင်းတောင်းထဲသို့ ထည့်ပြီးပါပြီ')" class="bg-emerald-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-emerald-700">ဝယ်မည်</button>
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition flex flex-col">
+                    <img src="https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=500&auto=format&fit=crop" class="h-56 w-full object-cover" alt="Backpack">
+                    <div class="p-4 flex-1 flex flex-col justify-between">
+                        <div>
+                            <h4 class="font-bold text-gray-800 text-lg">ရေစိုခံ ခရီးဆောင်အိတ်</h4>
+                            <p class="text-gray-500 text-sm mt-1">Laptop နှင့် ပစ္စည်းများစွာ ဆံ့သော ခိုင်ခန့်သည့် အိတ်</p>
+                        </div>
+                        <div class="mt-4 pt-3 border-t border-gray-100 flex justify-between items-center">
+                            <div>
+                                <div class="text-emerald-800 font-bold text-lg">157,500 ကျပ်</div>
+                                <div class="text-xs text-gray-400">$35.00 USD</div>
+                            </div>
+                            <button onclick="alert('ခြင်းတောင်းထဲသို့ ထည့်ပြီးပါပြီ')" class="bg-emerald-800 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-emerald-900">ဝယ်မည်</button>
                         </div>
                     </div>
                 </div>
+
                 <!-- Product 3 -->
-                <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition">
-                    <div class="bg-emerald-50 h-48 flex items-center justify-center text-emerald-600 font-bold text-lg">⌚ ခေတ်မီစမတ်နာရီ</div>
-                    <div class="p-4">
-                        <h4 class="font-bold text-gray-800 text-lg">Fitness Smart Watch</h4>
-                        <p class="text-gray-500 text-sm mt-1">ကျန်းမာရေးစောင့်ကြည့်ရန်နှင့် ဖုန်းခေါ်ဆိုရန်</p>
-                        <div class="flex justify-between items-center mt-4">
-                            <span class="text-emerald-600 font-bold text-lg">၆၀,၀၀၀ ကျပ်</span>
-                            <button onclick="alert('ခြင်းတောင်းထဲသို့ ထည့်ပြီးပါပြီ')" class="bg-emerald-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-emerald-700">ဝယ်မည်</button>
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition flex flex-col">
+                    <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500&auto=format&fit=crop" class="h-56 w-full object-cover" alt="Smart Watch">
+                    <div class="p-4 flex-1 flex flex-col justify-between">
+                        <div>
+                            <h4 class="font-bold text-gray-800 text-lg">Fitness Smart Watch</h4>
+                            <p class="text-gray-500 text-sm mt-1">ကျန်းမာရေးနှင့် ခေါ်ဆိုမှုများ စောင့်ကြည့်နိုင်သော စမတ်နာရီ</p>
+                        </div>
+                        <div class="mt-4 pt-3 border-t border-gray-100 flex justify-between items-center">
+                            <div>
+                                <div class="text-emerald-800 font-bold text-lg">225,000 ကျပ်</div>
+                                <div class="text-xs text-gray-400">$50.00 USD</div>
+                            </div>
+                            <button onclick="alert('ခြင်းတောင်းထဲသို့ ထည့်ပြီးပါပြီ')" class="bg-emerald-800 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-emerald-900">ဝယ်မည်</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- 3. REGISTER TAB (අကောင့်ဖွင့်ရန်) -->
-        <div x-show="currentTab === 'register'" class="max-w-md mx-auto bg-white p-8 rounded-2xl shadow-md border border-gray-100">
+        <!-- 3. PROFILE TAB (ဆိုင်အကောင့် အချက်အလက်) -->
+        <div x-show="currentTab === 'profile'" class="max-w-3xl mx-auto space-y-6">
+            <!-- Account Overview Card -->
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between pb-6 border-b border-gray-100">
+                    <div class="flex items-center space-x-4">
+                        <div class="w-16 h-16 bg-emerald-800 text-white rounded-full flex items-center justify-center text-2xl font-bold">
+                            <span x-text="shopName.charAt(0)"></span>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-gray-800" x-text="shopName"></h3>
+                            <p class="text-gray-500 text-sm flex items-center gap-2">
+                                📍 <span x-text="location"></span>
+                            </p>
+                        </div>
+                    </div>
+                    <span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-3 py-1 rounded-full">Active Shop</span>
+                </div>
+
+                <!-- Balance & Quick Actions -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+                    <div class="bg-gray-50 p-4 rounded-xl border border-gray-200">
+                        <span class="text-xs text-gray-500 font-semibold uppercase">ဆိုင် လက်ကျန်ငွေ (Balance)</span>
+                        <div class="text-2xl font-extrabold text-emerald-900 mt-1" x-text="'$' + balanceUSD.toFixed(2) + ' USD'"></div>
+                        <div class="text-sm text-gray-500" x-text="'≈ ' + (balanceUSD * 4500).toLocaleString() + ' Ks'"></div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <button @click="depositModal = true" class="flex-1 bg-emerald-800 text-white font-bold py-3 rounded-xl hover:bg-emerald-900 shadow text-center">
+                            💳 ငွေသွင်းရန်
+                        </button>
+                        <button @click="withdrawModal = true" class="flex-1 border border-emerald-800 text-emerald-800 font-bold py-3 rounded-xl hover:bg-emerald-50 text-center">
+                            🏧 ငွေထုတ်ရန်
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Auto-Generated IDs -->
+                <div class="grid grid-cols-2 gap-4 pt-4 border-t border-gray-100 text-sm">
+                    <div>
+                        <span class="text-gray-500">Shop ID (အော်တို):</span>
+                        <div class="font-mono font-bold text-gray-800" x-text="shopId"></div>
+                    </div>
+                    <div>
+                        <span class="text-gray-500">ဖိတ်ကြားကုဒ် (Invite Code):</span>
+                        <div class="font-mono font-bold text-gray-800" x-text="inviteCode"></div>
+                    </div>
+                    <div>
+                        <span class="text-gray-500">ဖုန်းနံပါတ်:</span>
+                        <div class="font-semibold text-gray-800" x-text="phone"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. REGISTER TAB -->
+        <div x-show="currentTab === 'register'" class="max-w-md mx-auto bg-white p-8 rounded-2xl shadow-sm border border-gray-200">
             <div class="text-center mb-6">
                 <h3 class="text-2xl font-bold text-gray-800">Green Shop အကောင့်ဖွင့်ရန်</h3>
-                <p class="text-emerald-600 font-semibold text-sm mt-1">✨ အကောင့်ဖွင့်တာနဲ့ ဒေါ်လာ ၁၅ (US$15) အလကားရယူလိုက်ပါ!</p>
+                <p class="text-gray-500 text-sm mt-1">သင့်၏ ကိုယ်ပိုင်ဆိုင်အကောင့် ထူထောင်လိုက်ပါ</p>
             </div>
             
-            <form @submit.prevent="isLoggedIn = true; shopId = 'GS-' + Math.floor(100000 + Math.random() * 900000); inviteCode = 'INV-' + Math.floor(1000 + Math.random() * 9000); currentTab = 'home'" class="space-y-4">
+            <form @submit.prevent="
+                isLoggedIn = true; 
+                shopId = 'GS-' + Math.floor(100000 + Math.random() * 900000); 
+                inviteCode = 'INV-' + Math.floor(1000 + Math.random() * 9000); 
+                currentTab = 'profile'" 
+                class="space-y-4">
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">ဆိုင်နာမည် (Shop Name)</label>
-                    <input type="text" x-model="shopName" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:outline-none" placeholder="ဥပမာ - My Dream Shop">
+                    <input type="text" x-model="shopName" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-700 focus:outline-none" placeholder="ဥပမာ - Royal Green Shop">
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">ဖုန်းနံပါတ် (Phone Number)</label>
-                    <input type="tel" x-model="phone" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:outline-none" placeholder="09xxxxxxxxx">
+                    <input type="tel" x-model="phone" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-700 focus:outline-none" placeholder="09xxxxxxxxx">
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">စကားဝှက် (Password)</label>
-                    <input type="password" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:outline-none" placeholder="••••••••">
+                    <input type="password" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-700 focus:outline-none" placeholder="••••••••">
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">တည်နေရာ (Location)</label>
-                    <input type="text" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:outline-none" placeholder="ရန်ကုန်၊ မြန်မာ">
+                    <input type="text" x-model="location" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-700 focus:outline-none" placeholder="ရန်ကုန်၊ မြန်မာ">
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">ဖိတ်ကြားကုဒ် (Referral / Invite Code)</label>
-                    <input type="text" placeholder="ရှိပါက ထည့်ပါ (သို့) အော်တိုဖြစ်မည်" class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 focus:outline-none">
+                    <input type="text" placeholder="ရှိပါက ထည့်ပါ (မဖြစ်မနေ မလိုပါ)" class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 focus:outline-none">
                 </div>
-                <button type="submit" class="w-full bg-emerald-600 text-white font-bold py-3 rounded-lg hover:bg-emerald-700 transition shadow-md">အကောင့်ဖွင့်ပြီး $15 ရယူမည်</button>
+                <button type="submit" class="w-full bg-emerald-800 text-white font-bold py-3 rounded-lg hover:bg-emerald-900 transition shadow">အကောင့်ဖွင့်မည်</button>
             </form>
 
             <p class="text-center text-sm text-gray-500 mt-4">
                 အကောင့်ပြီးသား ရှိပြီးသားလား? 
-                <button @click="currentTab = 'login'" class="text-emerald-600 font-semibold hover:underline">အကောင့်ဝင်ရန်</button>
+                <button @click="currentTab = 'login'" class="text-emerald-800 font-semibold hover:underline">အကောင့်ဝင်ရန်</button>
             </p>
         </div>
 
-        <!-- 4. LOGIN TAB (အကောင့်ဝင်ရန်) -->
-        <div x-show="currentTab === 'login'" class="max-w-md mx-auto bg-white p-8 rounded-2xl shadow-md border border-gray-100">
+        <!-- 5. LOGIN TAB -->
+        <div x-show="currentTab === 'login'" class="max-w-md mx-auto bg-white p-8 rounded-2xl shadow-sm border border-gray-200">
             <div class="text-center mb-6">
                 <h3 class="text-2xl font-bold text-gray-800">Green Shop သို့ အကောင့်ဝင်ရန်</h3>
                 <p class="text-gray-500 text-sm mt-1">ဖုန်းနံပါတ်နှင့် စကားဝှက်ဖြင့် ဝင်ရောက်ပါ</p>
             </div>
             
-            <form @submit.prevent="isLoggedIn = true; shopName = 'Mya Shop'; currentTab = 'home'" class="space-y-4">
+            <form @submit.prevent="isLoggedIn = true; currentTab = 'profile'" class="space-y-4">
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">ဖုန်းနံပါတ် (Phone Number)</label>
-                    <input type="tel" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:outline-none" placeholder="09xxxxxxxxx">
+                    <input type="tel" x-model="phone" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-700 focus:outline-none" placeholder="09xxxxxxxxx">
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">စကားဝှက် (Password)</label>
-                    <input type="password" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:outline-none" placeholder="••••••••">
+                    <input type="password" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-700 focus:outline-none" placeholder="••••••••">
                 </div>
-                <button type="submit" class="w-full bg-emerald-600 text-white font-bold py-3 rounded-lg hover:bg-emerald-700 transition shadow-md">အကောင့်ဝင်မည်</button>
+                <button type="submit" class="w-full bg-emerald-800 text-white font-bold py-3 rounded-lg hover:bg-emerald-900 transition shadow">အကောင့်ဝင်မည်</button>
             </form>
 
             <p class="text-center text-sm text-gray-500 mt-4">
                 အကောင့်အသစ် မရှိသေးဘူးလား? 
-                <button @click="currentTab = 'register'" class="text-emerald-600 font-semibold hover:underline">အကောင့်ဖွင့်မည်</button>
+                <button @click="currentTab = 'register'" class="text-emerald-800 font-semibold hover:underline">အကောင့်ဖွင့်မည်</button>
             </p>
+        </div>
+
+        <!-- DEPOSIT MODAL -->
+        <div x-show="depositModal" class="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50" x-cloak>
+            <div class="bg-white p-6 rounded-2xl max-w-sm w-full space-y-4">
+                <h4 class="font-bold text-lg text-gray-800">ငွေသွင်းရန် (Deposit)</h4>
+                <p class="text-xs text-gray-500">1 USD = 4,500 MMK</p>
+                <input type="number" id="depAmt" placeholder="ပမာဏ (USD)" class="w-full p-2 border rounded-lg">
+                <div class="flex gap-2">
+                    <button @click="
+                        let val = parseFloat(document.getElementById('depAmt').value);
+                        if(val > 0) balanceUSD += val;
+                        depositModal = false;
+                    " class="flex-1 bg-emerald-800 text-white py-2 rounded-lg font-bold">အတည်ပြုမည်</button>
+                    <button @click="depositModal = false" class="flex-1 bg-gray-200 text-gray-700 py-2 rounded-lg font-bold">မလုပ်တော့ပါ</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- WITHDRAW MODAL -->
+        <div x-show="withdrawModal" class="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50" x-cloak>
+            <div class="bg-white p-6 rounded-2xl max-w-sm w-full space-y-4">
+                <h4 class="font-bold text-lg text-gray-800">ငွေထုတ်ရန် (Withdraw)</h4>
+                <input type="number" id="wdAmt" placeholder="ပမာဏ (USD)" class="w-full p-2 border rounded-lg">
+                <div class="flex gap-2">
+                    <button @click="
+                        let val = parseFloat(document.getElementById('wdAmt').value);
+                        if(val > 0 && val <= balanceUSD) balanceUSD -= val;
+                        withdrawModal = false;
+                    " class="flex-1 bg-emerald-800 text-white py-2 rounded-lg font-bold">အတည်ပြုမည်</button>
+                    <button @click="withdrawModal = false" class="flex-1 bg-gray-200 text-gray-700 py-2 rounded-lg font-bold">မလုပ်တော့ပါ</button>
+                </div>
+            </div>
         </div>
 
     </main>
