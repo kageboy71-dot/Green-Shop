@@ -13,11 +13,12 @@
                 extend: {
                     colors: {
                         greenBrand: {
-                            50: '#f0fdf4',
-                            100: '#dcfce7',
-                            600: '#16a34a',
-                            800: '#166534',
-                            900: '#14532d',
+                            50: '#e8f5e9',
+                            100: '#c8e6c9',
+                            600: '#2e7d32',
+                            800: '#1b5e20',
+                            900: '#0d3b12',
+                            glossy: '#388e3c'
                         }
                     }
                 }
@@ -26,16 +27,29 @@
     </script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <style>
-        @keyframes float3D {
-            0%, 100% { transform: translateY(0) scale(1) rotateX(0deg); }
-            50% { transform: translateY(-10px) scale(1.05) rotateX(5deg); }
+        .glossy-green-bg {
+            background: linear-gradient(135deg, #4caf50 0%, #1b5e20 100%);
+        }
+        @keyframes dropLeaf {
+            0% { transform: translateY(-50px) rotate(0deg); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: translateY(100vh) rotate(360deg); opacity: 0.8; }
+        }
+        .leaf-animation {
+            position: absolute;
+            animation: dropLeaf 3s infinite linear;
+        }
+        @keyframes float3DText {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-8px) scale(1.03); }
+        }
         .animate-3d-logo {
-            animation: float3D 2.5s infinite ease-in-out;
-            filter: drop-shadow(0px 15px 25px rgba(22, 163, 74, 0.4));
+            animation: float3DText 2s infinite ease-in-out;
+            text-shadow: 0 10px 20px rgba(0,0,0,0.3);
         }
     </style>
 </head>
-<body class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-100 font-sans transition-colors duration-300 pb-16 md:pb-0" 
+<body class="bg-[#f1f8f2] dark:bg-gray-900 text-gray-800 dark:text-gray-100 font-sans transition-colors duration-300 pb-16 md:pb-0" 
       x-data="{ 
     splash: true,
     currentTab: 'home', 
@@ -54,7 +68,7 @@
     searchQuery: '',
     serviceModal: false,
     init() {
-        setTimeout(() => { this.splash = false; }, 2500);
+        setTimeout(() => { this.splash = false; }, 3000);
     },
     toggleDarkMode() {
         this.darkMode = !this.darkMode;
@@ -66,24 +80,35 @@
     }
 }">
 
-    <!-- 3D WELCOME SPLASH SCREEN -->
-    <div x-show="splash" x-transition:leave="transition ease-in duration-500 transform opacity-0" class="fixed inset-0 bg-greenBrand-900 z-[100] flex flex-col items-center justify-center text-white p-4">
-        <div class="bg-emerald-600 text-white font-extrabold text-4xl px-6 py-3 rounded-2xl shadow-2xl mb-4 animate-3d-logo border-2 border-emerald-400">
-            Green<span class="text-amber-400">.</span>
+    <!-- 3D SPLASH SCREEN (Image Theme matching) -->
+    <div x-show="splash" x-transition:leave="transition ease-in duration-700 transform opacity-0" class="fixed inset-0 glossy-green-bg z-[100] flex flex-col items-center justify-center text-white p-4 overflow-hidden">
+        <!-- Falling Leaves Effect -->
+        <div class="absolute inset-0 pointer-events-none overflow-hidden">
+            <span class="leaf-animation text-3xl left-[10%] top-[-10%]" style="animation-delay: 0s;">🍃</span>
+            <span class="leaf-animation text-2xl left-[30%] top-[-10%]" style="animation-delay: 1s;">🌿</span>
+            <span class="leaf-animation text-4xl left-[60%] top-[-10%]" style="animation-delay: 0.5s;">🍃</span>
+            <span class="leaf-animation text-3xl left-[80%] top-[-10%]" style="animation-delay: 1.5s;">🌿</span>
         </div>
-        <h1 class="text-3xl md:text-5xl font-extrabold tracking-wider text-greenBrand-100 mb-2">Welcome to Green Shop</h1>
-        <p class="text-greenBrand-100 text-sm md:text-base animate-pulse">Your Professional Global E-Commerce Platform</p>
+
+        <!-- 3D Logo Display -->
+        <div class="relative z-10 text-center">
+            <div class="text-5xl md:text-7xl font-extrabold tracking-wider text-white mb-3 animate-3d-logo flex items-center justify-center gap-2">
+                <span>Green Shop</span><span class="text-emerald-300">.</span> 🍃
+            </div>
+            <p class="text-emerald-100 text-base md:text-lg font-medium tracking-wide animate-pulse">Welcome to Green Shop</p>
+        </div>
     </div>
 
     <!-- MAIN NAVBAR -->
-    <nav class="bg-greenBrand-900 text-white sticky top-0 z-40 shadow-md">
+    <nav class="bg-[#2e7d32] text-white sticky top-0 z-40 shadow-md">
         <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
-            <!-- Brand Logo (Trip.com style box design) -->
-            <div class="flex items-center space-x-3 cursor-pointer" @click="currentTab = 'home'; activeCategory = 'all'">
-                <div class="bg-emerald-600 text-white font-extrabold text-xl px-3 py-1.5 rounded-xl shadow-lg border border-emerald-400">
-                    Green<span class="text-amber-400">.</span>
+            <!-- Brand Logo -->
+            <div class="flex items-center space-x-2 cursor-pointer" @click="currentTab = 'home'; activeCategory = 'all'">
+                <div class="bg-white/10 px-3 py-1.5 rounded-xl border border-white/20 shadow-inner flex items-center gap-1">
+                    <span class="text-xl font-extrabold tracking-wider">Green Shop</span>
+                    <span class="text-emerald-300 font-bold text-xl">.</span>
+                    <span class="text-lg">🍃</span>
                 </div>
-                <span class="text-xl font-bold tracking-wide hidden sm:inline">Shop</span>
             </div>
 
             <!-- Search Bar -->
@@ -91,27 +116,27 @@
                 <input type="text" x-model="searchQuery" 
                        :placeholder="lang === 'MY' ? 'Shop ID၊ ပစ္စည်းအမည် ရှာဖွေပါ...' : 'Search Shop ID or Product...'" 
                        class="w-full px-4 py-2 rounded-l-lg text-gray-800 focus:outline-none">
-                <button class="bg-greenBrand-600 px-4 py-2 rounded-r-lg font-bold">🔍</button>
+                <button class="bg-[#1b5e20] px-4 py-2 rounded-r-lg font-bold hover:bg-[#14532d]">🔍</button>
             </div>
 
             <!-- Actions Header -->
             <div class="flex items-center space-x-3 text-sm font-medium">
-                <button @click="lang = (lang === 'MY' ? 'EN' : 'MY')" class="px-2.5 py-1 bg-greenBrand-800 rounded font-bold">
+                <button @click="lang = (lang === 'MY' ? 'EN' : 'MY')" class="px-2.5 py-1 bg-[#1b5e20] rounded font-bold">
                     <span x-text="lang"></span>
                 </button>
-                <button @click="toggleDarkMode()" class="p-1.5 bg-greenBrand-800 rounded">
+                <button @click="toggleDarkMode()" class="p-1.5 bg-[#1b5e20] rounded">
                     <span x-text="darkMode ? '☀️' : '🌙'"></span>
                 </button>
 
                 <template x-if="!isLoggedIn">
                     <div class="hidden sm:flex space-x-2">
-                        <button @click="currentTab = 'login'" class="border border-white px-3 py-1.5 rounded hover:bg-white hover:text-greenBrand-900 transition" x-text="lang === 'MY' ? 'အကောင့်ဝင်ရန်' : 'Login'"></button>
-                        <button @click="currentTab = 'register'" class="bg-emerald-600 text-white px-3 py-1.5 rounded hover:bg-emerald-700 transition" x-text="lang === 'MY' ? 'အကောင့်ဖွင့်မည်' : 'Register'"></button>
+                        <button @click="currentTab = 'login'" class="border border-white/70 px-3 py-1.5 rounded hover:bg-white hover:text-[#2e7d32] transition" x-text="lang === 'MY' ? 'အကောင့်ဝင်ရန်' : 'Login'"></button>
+                        <button @click="currentTab = 'register'" class="bg-[#1b5e20] text-white px-3 py-1.5 rounded hover:bg-[#14532d] transition shadow" x-text="lang === 'MY' ? 'အကောင့်ဖွင့်မည်' : 'Register'"></button>
                     </div>
                 </template>
 
                 <template x-if="isLoggedIn">
-                    <button @click="currentTab = 'profile'" class="bg-greenBrand-800 px-3 py-1.5 rounded flex items-center gap-1">
+                    <button @click="currentTab = 'profile'" class="bg-[#1b5e20] px-3 py-1.5 rounded flex items-center gap-1">
                         <span>👤</span>
                         <span x-text="shopName"></span>
                     </button>
@@ -123,36 +148,36 @@
     <!-- MAIN BODY WITH SIDEBAR -->
     <div class="max-w-7xl mx-auto px-4 py-6 flex flex-col md:flex-row gap-6">
 
-        <!-- SIDEBAR CATEGORIES (No folder icons, clean text) -->
-        <aside class="hidden md:block w-64 bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4 shrink-0 h-fit">
-            <h3 class="font-bold text-lg mb-4 text-greenBrand-900 dark:text-greenBrand-100 pb-2 border-b border-gray-100 dark:border-gray-700">
+        <!-- SIDEBAR CATEGORIES -->
+        <aside class="hidden md:block w-64 bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-emerald-100 dark:border-gray-700 p-4 shrink-0 h-fit">
+            <h3 class="font-bold text-lg mb-4 text-[#2e7d32] dark:text-emerald-400 pb-2 border-b border-gray-100 dark:border-gray-700">
                 <span x-text="lang === 'MY' ? 'အမျိုးအစားများ' : 'Categories'"></span>
             </h3>
 
             <ul class="space-y-2 text-sm font-medium">
                 <li>
                     <button @click="currentTab = 'products'; activeCategory = 'all'" 
-                            :class="activeCategory === 'all' ? 'bg-greenBrand-50 dark:bg-gray-700 text-greenBrand-800 dark:text-greenBrand-100 font-bold' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'"
+                            :class="activeCategory === 'all' ? 'bg-[#e8f5e9] dark:bg-gray-700 text-[#2e7d32] dark:text-emerald-300 font-bold' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'"
                             class="w-full text-left px-3 py-2 rounded-lg transition" x-text="lang === 'MY' ? 'ပစ္စည်းအားလုံး' : 'All Products'"></button>
                 </li>
                 <li>
                     <button @click="currentTab = 'products'; activeCategory = 'apparel'" 
-                            :class="activeCategory === 'apparel' ? 'bg-greenBrand-50 dark:bg-gray-700 text-greenBrand-800 dark:text-greenBrand-100 font-bold' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'"
+                            :class="activeCategory === 'apparel' ? 'bg-[#e8f5e9] dark:bg-gray-700 text-[#2e7d32] dark:text-emerald-300 font-bold' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'"
                             class="w-full text-left px-3 py-2 rounded-lg transition" x-text="lang === 'MY' ? 'ဝတ်ဆင်စရာ အဝတ်အထည်များ' : 'Apparel & Wearables'"></button>
                 </li>
                 <li>
                     <button @click="currentTab = 'products'; activeCategory = 'fashion'" 
-                            :class="activeCategory === 'fashion' ? 'bg-greenBrand-50 dark:bg-gray-700 text-greenBrand-800 dark:text-greenBrand-100 font-bold' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'"
+                            :class="activeCategory === 'fashion' ? 'bg-[#e8f5e9] dark:bg-gray-700 text-[#2e7d32] dark:text-emerald-300 font-bold' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'"
                             class="w-full text-left px-3 py-2 rounded-lg transition" x-text="lang === 'MY' ? 'ဖက်ရှင်နှင့် ဖိနပ်များ' : 'Fashion & Footwear'"></button>
                 </li>
                 <li>
                     <button @click="currentTab = 'products'; activeCategory = 'textiles'" 
-                            :class="activeCategory === 'textiles' ? 'bg-greenBrand-50 dark:bg-gray-700 text-greenBrand-800 dark:text-greenBrand-100 font-bold' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'"
+                            :class="activeCategory === 'textiles' ? 'bg-[#e8f5e9] dark:bg-gray-700 text-[#2e7d32] dark:text-emerald-300 font-bold' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'"
                             class="w-full text-left px-3 py-2 rounded-lg transition" x-text="lang === 'MY' ? 'အိမ်သုံး အထည်အလိပ်များ' : 'Home Textiles'"></button>
                 </li>
                 <li>
                     <button @click="currentTab = 'products'; activeCategory = 'general'" 
-                            :class="activeCategory === 'general' ? 'bg-greenBrand-50 dark:bg-gray-700 text-greenBrand-800 dark:text-greenBrand-100 font-bold' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'"
+                            :class="activeCategory === 'general' ? 'bg-[#e8f5e9] dark:bg-gray-700 text-[#2e7d32] dark:text-emerald-300 font-bold' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'"
                             class="w-full text-left px-3 py-2 rounded-lg transition" x-text="lang === 'MY' ? 'လူသုံးကုန်နှင့် အထွေထွေ' : 'General Goods'"></button>
                 </li>
             </ul>
@@ -163,10 +188,10 @@
 
             <!-- 1. HOME & PRODUCTS CONTENT -->
             <div x-show="currentTab === 'home' || currentTab === 'products'">
-                <div class="bg-gradient-to-r from-greenBrand-900 via-greenBrand-800 to-teal-900 text-white rounded-2xl p-6 md:p-10 shadow-md mb-8">
+                <div class="glossy-green-bg text-white rounded-2xl p-6 md:p-10 shadow-md mb-8">
                     <h2 class="text-2xl md:text-4xl font-extrabold mb-3" x-text="lang === 'MY' ? 'Green Shop သို့ ကြိုဆိုပါတယ်' : 'Welcome to Green Shop'"></h2>
-                    <p class="text-greenBrand-100 text-sm md:text-base max-w-xl mb-4" x-text="lang === 'MY' ? 'အကောင့်မဖွင့်ဘဲ လွတ်လပ်စွာ လေ့လာနိုင်ပြီး စိတ်ကြိုက် ဝယ်ယူနိုင်ပါသည်။' : 'Explore freely without logging in.'"></p>
-                    <span class="text-xs bg-emerald-600 text-white px-3 py-1 rounded-full font-semibold">( Exchange Rate: 1 USD = 4,500 MMK )</span>
+                    <p class="text-emerald-100 text-sm md:text-base max-w-xl mb-4" x-text="lang === 'MY' ? 'အကောင့်မဖွင့်ဘဲ လွတ်လပ်စွာ လေ့လာနိုင်ပြီး စိတ်ကြိုက် ဝယ်ယူနိုင်ပါသည်။' : 'Explore freely without logging in.'"></p>
+                    <span class="text-xs bg-[#1b5e20] text-white px-3 py-1 rounded-full font-semibold shadow-sm">( Exchange Rate: 1 USD = 4,500 MMK )</span>
                 </div>
 
                 <!-- Products Grid -->
@@ -187,7 +212,7 @@
                 }">
                     <template x-for="item in items" :key="item.id">
                         <div x-show="activeCategory === 'all' || activeCategory === item.cat" 
-                             class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden flex flex-col hover:shadow-md transition">
+                             class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-emerald-100 dark:border-gray-700 overflow-hidden flex flex-col hover:shadow-md transition">
                             <div class="relative h-48 w-full overflow-hidden bg-gray-100">
                                 <img :src="item.img" class="h-full w-full object-cover transition transform hover:scale-105 duration-300">
                                 <div class="absolute top-2 right-2 flex flex-col gap-1">
@@ -203,13 +228,13 @@
                                 <div>
                                     <h4 class="font-bold text-base text-gray-800 dark:text-gray-100" x-text="item.title"></h4>
                                     <div class="mt-2 flex items-baseline gap-2">
-                                        <span class="text-greenBrand-800 dark:text-greenBrand-100 font-bold text-lg" x-text="(item.priceUSD * 4500).toLocaleString() + ' MMK'"></span>
-                                        <span class="text-xs text-gray-400" x-text="'$' + item.priceUSD + ' USD'"></span>
+                                        <span class="text-[#2e7d32] dark:text-emerald-400 font-bold text-lg" x-text="(item.priceUSD * 4500).toLocaleString() + ' MMK'"></span>
+                                        <span class="text-xs text-gray-400" x-text="'\$' + item.priceUSD + ' USD'"></span>
                                     </div>
                                 </div>
                                 <div class="mt-4 pt-3 border-t border-gray-100 dark:border-gray-700 flex gap-2">
-                                    <button onclick="alert('ဆိုင်သို့ တင်သွင်းပြီးပါပြီ')" class="flex-1 bg-greenBrand-50 dark:bg-gray-700 text-greenBrand-800 dark:text-greenBrand-100 text-xs font-semibold py-2 rounded">📥 တင်မည်</button>
-                                    <button onclick="alert('ခြင်းတောင်းထဲသို့ ထည့်ပြီးပါပြီ')" class="flex-1 bg-greenBrand-800 text-white text-xs font-semibold py-2 rounded shadow">🛒 ဝယ်မည်</button>
+                                    <button onclick="alert('ဆိုင်သို့ တင်သွင်းပြီးပါပြီ')" class="flex-1 bg-[#e8f5e9] dark:bg-gray-700 text-[#2e7d32] dark:text-emerald-300 text-xs font-semibold py-2 rounded">📥 တင်မည်</button>
+                                    <button onclick="alert('ခြင်းတောင်းထဲသို့ ထည့်ပြီးပါပြီ')" class="flex-1 bg-[#2e7d32] text-white text-xs font-semibold py-2 rounded shadow hover:bg-[#1b5e20]">🛒 ဝယ်မည်</button>
                                 </div>
                             </div>
                         </div>
@@ -217,95 +242,38 @@
                 </div>
             </div>
 
-            <!-- 2. REGISTER TAB (ဆိုင်နာမည်၊ ဖုန်း၊ စကားဝှက်၊ တည်နေရာ၊ ဖိတ်ကြားကုဒ်) -->
-            <div x-show="currentTab === 'register'" class="bg-white dark:bg-gray-800 p-8 rounded-xl max-w-md mx-auto shadow-sm border border-gray-200 dark:border-gray-700">
-                <h3 class="text-2xl font-bold mb-6 text-center" x-text="lang === 'MY' ? 'ဆိုင်အကောင့်ဖွင့်မည်' : 'Register Shop'"></h3>
+            <!-- 2. REGISTER TAB -->
+            <div x-show="currentTab === 'register'" class="bg-white dark:bg-gray-800 p-8 rounded-xl max-w-md mx-auto shadow-sm border border-emerald-100 dark:border-gray-700">
+                <h3 class="text-2xl font-bold mb-6 text-center text-[#2e7d32] dark:text-emerald-400" x-text="lang === 'MY' ? 'ဆိုင်အကောင့်ဖွင့်မည်' : 'Register Shop'"></h3>
                 <form @submit.prevent="isLoggedIn = true; currentTab = 'profile'" class="space-y-4">
                     <div>
                         <label class="block text-sm font-medium mb-1">ဆိုင်နာမည် (Shop Name)</label>
-                        <input type="text" x-model="shopName" required placeholder="ဥပမာ - Green Enterprise" class="w-full p-2.5 border rounded-lg dark:bg-gray-700 dark:border-gray-600">
+                        <input type="text" x-model="shopName" required placeholder="ဥပမာ - Green Enterprise" class="w-full p-2.5 border rounded-lg dark:bg-gray-700 dark:border-gray-600 focus:ring-2 focus:ring-[#2e7d32]">
                     </div>
                     <div>
                         <label class="block text-sm font-medium mb-1">ဖုန်းနံပါတ် (Phone Number)</label>
-                        <input type="tel" x-model="phone" required placeholder="09xxxxxxxxx" class="w-full p-2.5 border rounded-lg dark:bg-gray-700 dark:border-gray-600">
+                        <input type="tel" x-model="phone" required placeholder="09xxxxxxxxx" class="w-full p-2.5 border rounded-lg dark:bg-gray-700 dark:border-gray-600 focus:ring-2 focus:ring-[#2e7d32]">
                     </div>
                     <div>
                         <label class="block text-sm font-medium mb-1">စကားဝှက် (Password)</label>
-                        <input type="password" x-model="password" required placeholder="••••••••" class="w-full p-2.5 border rounded-lg dark:bg-gray-700 dark:border-gray-600">
+                        <input type="password" x-model="password" required placeholder="••••••••" class="w-full p-2.5 border rounded-lg dark:bg-gray-700 dark:border-gray-600 focus:ring-2 focus:ring-[#2e7d32]">
                     </div>
                     <div>
                         <label class="block text-sm font-medium mb-1">တည်နေရာ (Location)</label>
-                        <input type="text" x-model="location" required placeholder="ရန်ကုန်၊ မြန်မာ" class="w-full p-2.5 border rounded-lg dark:bg-gray-700 dark:border-gray-600">
+                        <input type="text" x-model="location" required placeholder="ရန်ကုန်၊ မြန်မာ" class="w-full p-2.5 border rounded-lg dark:bg-gray-700 dark:border-gray-600 focus:ring-2 focus:ring-[#2e7d32]">
                     </div>
                     <div>
                         <label class="block text-sm font-medium mb-1">ဖိတ်ကြားကုဒ် (Referral Code)</label>
-                        <input type="text" x-model="referral" placeholder="ရှိပါက ထည့်ပါ" class="w-full p-2.5 border rounded-lg dark:bg-gray-700 dark:border-gray-600">
+                        <input type="text" x-model="referral" placeholder="ရှိပါက ထည့်ပါ" class="w-full p-2.5 border rounded-lg dark:bg-gray-700 dark:border-gray-600 focus:ring-2 focus:ring-[#2e7d32]">
                     </div>
-                    <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-lg shadow transition">အကောင့်ဖွင့်မည်</button>
+                    <button type="submit" class="w-full bg-[#2e7d32] hover:bg-[#1b5e20] text-white font-bold py-3 rounded-lg shadow transition">အကောင့်ဖွင့်မည်</button>
                 </form>
             </div>
 
             <!-- 3. LOGIN TAB -->
-            <div x-show="currentTab === 'login'" class="bg-white dark:bg-gray-800 p-8 rounded-xl max-w-md mx-auto shadow-sm border border-gray-200 dark:border-gray-700">
-                <h3 class="text-2xl font-bold mb-6 text-center">အကောင့်ဝင်ရန်</h3>
+            <div x-show="currentTab === 'login'" class="bg-white dark:bg-gray-800 p-8 rounded-xl max-w-md mx-auto shadow-sm border border-emerald-100 dark:border-gray-700">
+                <h3 class="text-2xl font-bold mb-6 text-center text-[#2e7d32] dark:text-emerald-400">အကောင့်ဝင်ရန်</h3>
                 <form @submit.prevent="isLoggedIn = true; currentTab = 'profile'" class="space-y-4">
                     <input type="tel" placeholder="ဖုန်းနံပါတ်" required class="w-full p-3 border rounded-lg dark:bg-gray-700">
                     <input type="password" placeholder="စကားဝှက်" required class="w-full p-3 border rounded-lg dark:bg-gray-700">
-                    <button type="submit" class="w-full bg-emerald-600 text-white py-3 rounded-lg font-bold shadow">အကောင့်ဝင်မည်</button>
-                </form>
-            </div>
-
-            <!-- 4. PROFILE TAB -->
-            <div x-show="currentTab === 'profile'" class="bg-white dark:bg-gray-800 p-6 rounded-xl max-w-xl mx-auto shadow-sm border border-gray-200">
-                <h3 class="text-xl font-bold mb-4">ဆိုင်ပရိုဖိုင် အချက်အလက်</h3>
-                <div class="space-y-2 text-sm">
-                    <p><strong>Shop Name:</strong> <span x-text="shopName || 'Green Enterprise'"></span></p>
-                    <p><strong>Shop ID:</strong> <span x-text="shopId" class="font-mono"></span></p>
-                    <p><strong>Invite Code:</strong> <span x-text="inviteCode" class="font-mono"></span></p>
-                    <p><strong>Location:</strong> <span x-text="location || 'ရန်ကုန်'"></span></p>
-                </div>
-            </div>
-
-        </main>
-    </div>
-
-    <!-- MOBILE BOTTOM NAVIGATION BAR (ဖုန်းသုံးလျှင် အောက်ခြေတွင်ပေါ်မည့် ခလုတ်များ) -->
-    <div class="md:hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 flex justify-around py-3 z-50 text-xs font-semibold">
-        <button @click="currentTab = 'home'; activeCategory = 'all'" class="flex flex-col items-center text-emerald-600">
-            <span>🏠</span>
-            <span>ပင်မ</span>
-        </button>
-        <button @click="currentTab = 'products'" class="flex flex-col items-center text-gray-600 dark:text-gray-300">
-            <span>🛍️</span>
-            <span>ပစ္စည်း</span>
-        </button>
-        <button @click="serviceModal = true" class="flex flex-col items-center text-gray-600 dark:text-gray-300">
-            <span>🎧</span>
-            <span>ဆာဗစ်</span>
-        </button>
-        <button @click="if(!isLoggedIn){ currentTab = 'register'; } else { currentTab = 'profile'; }" class="flex flex-col items-center text-gray-600 dark:text-gray-300">
-            <span>👤</span>
-            <span>ပရိုဖိုင်</span>
-        </button>
-    </div>
-
-    <!-- FLOATING CUSTOMER SERVICE BUTTON (Desktop) -->
-    <div class="hidden md:block fixed bottom-6 right-6 z-50">
-        <button @click="serviceModal = true" class="bg-white dark:bg-gray-800 border-2 border-greenBrand-800 text-greenBrand-800 dark:text-greenBrand-100 p-4 rounded-full shadow-2xl hover:scale-110 transition flex items-center justify-center">
-            <span class="text-2xl">🎧</span>
-        </button>
-    </div>
-
-    <!-- SERVICE MODAL -->
-    <div x-show="serviceModal" class="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50" x-cloak>
-        <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl max-w-sm w-full space-y-4 text-center">
-            <div class="text-4xl">🎧</div>
-            <h4 class="font-bold text-lg">Customer Service</h4>
-            <p class="text-xs text-gray-500">၂၄ နာရီ တိုက်ရိုက် ကူညီပေးလျက်ရှိပါသည်</p>
-            <div class="bg-greenBrand-50 dark:bg-gray-700 p-3 rounded-lg text-greenBrand-900 dark:text-greenBrand-100 font-bold">Telegram/Viber: @GreenShopSupport</div>
-            <button @click="serviceModal = false" class="w-full bg-gray-200 dark:bg-gray-700 py-2 rounded-lg font-bold">ပိတ်မည်</button>
-        </div>
-    </div>
-
-</body>
-</html>
+                    <button type="submit" class="w-full bg-[#2e7d32] hover:bg-[#1b5e20] text-white py-3 rounded-lg font-bold shadow transition
