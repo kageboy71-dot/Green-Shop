@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Green Shop - Modern Professional Platform</title>
+    <title>Green Shop - Professional E-Commerce Platform</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -44,7 +44,6 @@
             0%, 100% { transform: translateY(0) scale(1); }
             50% { transform: translateY(-20px) scale(1.05); }
         }
-        /* Clean RGB Neon Glow */
         @keyframes rgbGlow {
             0% { border-color: #2e7d32; box-shadow: 0 0 12px rgba(46, 125, 50, 0.6); }
             33% { border-color: #00bcd4; box-shadow: 0 0 12px rgba(0, 188, 212, 0.6); }
@@ -79,8 +78,8 @@
     password: '',
     referral: '',
     termsAgreed: false,
-    shopId: localStorage.getItem('gs_shopid') || 'GS-884920', 
-    inviteCode: localStorage.getItem('gs_invite') || 'INV-4921',
+    shopId: localStorage.getItem('gs_shopid') || 'GS-' + Math.floor(100000 + Math.random() * 900000), 
+    inviteCode: localStorage.getItem('gs_invite') || 'INV-' + Math.floor(1000 + Math.random() * 9000),
     vipLevel: 'VIP Level 1',
     balanceUSD: parseFloat(localStorage.getItem('gs_balance')) || 150.00,
     searchQuery: '',
@@ -99,7 +98,7 @@
     selectedUser: null,
     selectedChatUser: null,
     chatInput: '',
-    chatMessages: {},
+    chatMessages: JSON.parse(localStorage.getItem('gs_chat')) || {},
     orderCount: parseInt(localStorage.getItem('gs_orders')) || 0,
     maxOrders: 15,
     totalProfit: parseFloat(localStorage.getItem('gs_profit')) || 0,
@@ -107,7 +106,7 @@
     isProcessingOrder: false,
     selectedComment: '',
     currentOrderItem: null,
-    usersList: [
+    usersList: JSON.parse(localStorage.getItem('gs_users')) || [
         { 
             id: 'GS-884920', 
             name: 'Green Enterprise', 
@@ -118,17 +117,6 @@
             orderMode: 'edit',
             customOrderAmounts: [15, 25, 40, 60, 80, 100, 120, 150, 180, 200, 220, 250, 280, 300, 350],
             history: ['+$15.00 (Order #1)', '+$12.50 (Order #2)'] 
-        },
-        { 
-            id: 'GS-492102', 
-            name: 'Royal Fashion', 
-            contact: 'mary@gmail.com', 
-            location: 'မန္တလေး (21.9588° N, 96.0891° E)', 
-            balance: 340.50, 
-            vip: 'VIP Level 3', 
-            orderMode: 'auto',
-            customOrderAmounts: [20, 30, 45, 65, 85, 105, 125, 155, 185, 205, 225, 255, 285, 305, 360],
-            history: ['+$20.00 (Order #1)', '+$18.00 (Order #2)'] 
         }
     ],
     commentsPool: [
@@ -141,11 +129,39 @@
         ]
     ],
     items: [
+        // 30 Unique Items (Apparel, Washing Machines, Irons)
         { id: 1, cat: 'apparel', title: 'Casual Cotton Organic T-Shirt', priceUSD: 14, img: 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=500' },
         { id: 2, cat: 'apparel', title: 'Classic Button-Down Oxford Shirt', priceUSD: 28, img: 'https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=500' },
-        { id: 3, cat: 'fashion', title: 'Urban Athletic Running Sneakers', priceUSD: 54, img: 'https://images.unsplash.com/photo-1549298916-b41d501d3772?w=500' },
-        { id: 4, cat: 'textiles', title: 'Luxury Egyptian Cotton Bedding Set', priceUSD: 75, img: 'https://images.unsplash.com/photo-1616627547584-bf28cee262db?w=500' },
-        { id: 5, cat: 'general', title: 'Hydrating Botanical Skin Care Kit', priceUSD: 35, img: 'https://images.unsplash.com/photo-1556228720-195a672e8a03?w=500' }
+        { id: 3, cat: 'apparel', title: 'Slim Fit Blue Denim Jeans', priceUSD: 36, img: 'https://images.unsplash.com/photo-1542272604-780c36856842?w=500' },
+        { id: 4, cat: 'apparel', title: 'Myanmar Silk Longyi Traditional Dress', priceUSD: 45, img: 'https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?w=500' },
+        { id: 5, cat: 'apparel', title: 'Elegant Evening Floral Gown', priceUSD: 68, img: 'https://images.unsplash.com/photo-1566174053879-31528523f8ae?w=500' },
+        { id: 6, cat: 'apparel', title: 'Thermal Winter Fleece Coat', priceUSD: 58, img: 'https://images.unsplash.com/photo-1551028719-00167b16eac5?w=500' },
+        { id: 7, cat: 'apparel', title: 'Soft Cotton Nightwear Pajama Set', priceUSD: 24, img: 'https://images.unsplash.com/photo-1578632767115-351597cf2477?w=500' },
+        { id: 8, cat: 'apparel', title: 'Streetwear Oversized Hoodie Jacket', priceUSD: 42, img: 'https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=500' },
+        { id: 9, cat: 'apparel', title: 'Vintage Leather Biker Jacket', priceUSD: 85, img: 'https://images.unsplash.com/photo-1520975954732-35dd22299614?w=500' },
+        { id: 10, cat: 'apparel', title: 'Summer Breathable Linen Shorts', priceUSD: 22, img: 'https://images.unsplash.com/photo-1591195853828-11db59a44f6b?w=500' },
+
+        { id: 11, cat: 'laundry', title: 'Smart Front Load Washing Machine 8kg', priceUSD: 290, img: 'https://images.unsplash.com/photo-1626806787461-102c1bfaaea1?w=500' },
+        { id: 12, cat: 'laundry', title: 'Compact Top Load Washer & Spinner', priceUSD: 180, img: 'https://images.unsplash.com/photo-1582735689369-4fe89db7114c?w=500' },
+        { id: 13, cat: 'laundry', title: 'Ultra Steam Inverter Washing Machine', priceUSD: 350, img: 'https://images.unsplash.com/photo-1610557892470-55d9e80c0bce?w=500' },
+        { id: 14, cat: 'laundry', title: 'Mini Portable Ultrasonic Washer', priceUSD: 65, img: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=500' },
+        { id: 15, cat: 'laundry', title: 'Heavy Duty Commercial Laundry Washer', priceUSD: 520, img: 'https://images.unsplash.com/photo-1517677208171-0bc6725a3e60?w=500' },
+        { id: 16, cat: 'laundry', title: 'Eco-Friendly Energy Saving Washer', priceUSD: 240, img: 'https://images.unsplash.com/photo-1556911220-e15b29be8c8f?w=500' },
+        { id: 17, cat: 'laundry', title: 'Direct Drive Silent Washing Machine', priceUSD: 380, img: 'https://images.unsplash.com/photo-1556912173-3bb406ef7e77?w=500' },
+        { id: 18, cat: 'laundry', title: 'Twin Tub Semi-Automatic Washer', priceUSD: 150, img: 'https://images.unsplash.com/photo-1556911261-6bd3411c7b2f?w=500' },
+        { id: 19, cat: 'laundry', title: 'Deluxe Steam Care Laundry System', priceUSD: 450, img: 'https://images.unsplash.com/photo-1585336261022-6fc0e693175c?w=500' },
+        { id: 20, cat: 'laundry', title: 'All-in-One Washer and Dryer Combo', priceUSD: 600, img: 'https://images.unsplash.com/photo-1512496015851-a90fb38ba796?w=500' },
+
+        { id: 21, cat: 'iron', title: 'Professional Ceramic Steam Iron', priceUSD: 35, img: 'https://images.unsplash.com/photo-1585338107529-13afc5f02c86?w=500' },
+        { id: 22, cat: 'iron', title: 'Vertical Garment Steamer for Clothes', priceUSD: 75, img: 'https://images.unsplash.com/photo-1517677208171-0bc6725a3e60?w=500' },
+        { id: 23, cat: 'iron', title: 'Wireless Rechargeable Electric Iron', priceUSD: 55, img: 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=500' },
+        { id: 24, cat: 'iron', title: 'Travel Mini Folding Iron with Steam', priceUSD: 25, img: 'https://images.unsplash.com/photo-1542272604-780c36856842?w=500' },
+        { id: 25, cat: 'iron', title: 'Heavyweight Vintage Charcoal Iron', priceUSD: 40, img: 'https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=500' },
+        { id: 26, cat: 'iron', title: 'Digital LED Temperature Control Iron', priceUSD: 60, img: 'https://images.unsplash.com/photo-1551028719-00167b16eac5?w=500' },
+        { id: 27, cat: 'iron', title: 'High Pressure Standing Garment Iron', priceUSD: 120, img: 'https://images.unsplash.com/photo-1566174053879-31528523f8ae?w=500' },
+        { id: 28, cat: 'iron', title: 'Non-Stick Soleplate Dry Iron', priceUSD: 20, img: 'https://images.unsplash.com/photo-1578632767115-351597cf2477?w=500' },
+        { id: 29, cat: 'iron', title: 'Dual Voltage International Travel Iron', priceUSD: 30, img: 'https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=500' },
+        { id: 30, cat: 'iron', title: 'Smart Auto-Shutoff Steam Iron', priceUSD: 50, img: 'https://images.unsplash.com/photo-1520975954732-35dd22299614?w=500' }
     ],
     showAlert(msg) {
         this.alertMessage = msg;
@@ -185,7 +201,8 @@
         localStorage.setItem('gs_location', this.location);
         localStorage.setItem('gs_balance', this.balanceUSD);
 
-        this.usersList.unshift({
+        // Auto add to users list for admin & service
+        let newUser = {
             id: this.shopId,
             name: this.shopName,
             contact: this.contactInput,
@@ -194,11 +211,13 @@
             vip: this.vipLevel,
             orderMode: 'auto',
             customOrderAmounts: [15, 25, 40, 60, 80, 100, 120, 150, 180, 200, 220, 250, 280, 300, 350],
-            history: ['Account Created']
-        });
+            history: ['Account Created Successfully']
+        };
+        this.usersList.unshift(newUser);
+        localStorage.setItem('gs_users', JSON.stringify(this.usersList));
 
         this.currentTab = 'profile';
-        this.showAlert('ဆိုင်အကောင့် အောင်မြင်စွာ ဖွင့်လှစ်ပြီးပါပြီ။');
+        this.showAlert('ဆိုင်အကောင့် အောင်မြင်စွာ ဖွင့်လှစ်ပြီးပါပြီ။ အကောင့်အချက်အလက်များကို Admin ဘက်သို့ အော်တို တင်ပြီးပါပြီ။');
     },
     openOrderModal() {
         if(!this.isLoggedIn) {
@@ -211,7 +230,6 @@
             return;
         }
 
-        // Check user order mode and required balance
         let currentUser = this.usersList.find(u => u.id === this.shopId) || this.usersList[0];
         let requiredPrice = currentUser.customOrderAmounts[this.orderCount] || 25;
 
@@ -259,8 +277,9 @@
     initLiveChat() {
         if(!this.chatMessages[this.shopId]) {
             this.chatMessages[this.shopId] = [
-                { sender: 'bot', text: 'မင်္ဂလာပါရှင်။ Green shop မှ ကြိုဆိုပါသည်၊ ဘာများ ကူညီပေးရမလဲရှင်။' }
+                { sender: 'bot', text: 'မင်္ဂလာပါရှင့်။ Green shop မှ ကြိုဆိုပါသည်၊ ဘာများ ကူညီပေးရမလဲရှင်။' }
             ];
+            localStorage.setItem('gs_chat', JSON.stringify(this.chatMessages));
         }
     },
     sendMessage(targetId) {
@@ -276,12 +295,15 @@
                     sender: 'bot',
                     text: 'မေးမြန်းမှုအတွက် ကျေးဇူးတင်ပါသည်။ Admin မှ မကြာမီ အကြောင်းပြန်ပေးပါမည်။'
                 });
+                localStorage.setItem('gs_chat', JSON.stringify(this.chatMessages));
             }, 1000);
+            localStorage.setItem('gs_chat', JSON.stringify(this.chatMessages));
         }
     },
     deleteChatMessage(targetId, index) {
         if(this.chatMessages[targetId]) {
             this.chatMessages[targetId].splice(index, 1);
+            localStorage.setItem('gs_chat', JSON.stringify(this.chatMessages));
         }
     },
     init() {
@@ -344,11 +366,14 @@
 
     <!-- MAIN BODY -->
     <div class="max-w-7xl mx-auto px-4 py-6 flex flex-col md:flex-row gap-6">
-        <!-- SIDEBAR (NO EMOJIS) -->
+        <!-- SIDEBAR -->
         <aside class="hidden md:block w-64 bg-white dark:bg-gray-800 rounded-xl shadow-sm rgb-border p-4 shrink-0 h-fit">
             <h3 class="font-bold text-lg mb-4 text-[#2e7d32] dark:text-emerald-400 border-b pb-2">အမျိုးအစားများ</h3>
             <ul class="space-y-2 text-sm font-medium">
                 <li><button @click="currentTab = 'home'; activeCategory = 'all'" class="w-full text-left px-3 py-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700">ပစ္စည်းအားလုံး</button></li>
+                <li><button @click="currentTab = 'home'; activeCategory = 'apparel'" class="w-full text-left px-3 py-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700">အဝတ်အထည်များ (10)</button></li>
+                <li><button @click="currentTab = 'home'; activeCategory = 'laundry'" class="w-full text-left px-3 py-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700">အဝတ်လျှော်စက်များ (10)</button></li>
+                <li><button @click="currentTab = 'home'; activeCategory = 'iron'" class="w-full text-left px-3 py-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700">မီးပူတိုက်စက်များ (10)</button></li>
                 <li><button @click="currentTab = 'ordertask'" class="w-full text-left px-3 py-2 rounded-lg bg-amber-50 text-amber-900 font-bold">အော်ဒါတင်သည့်စနစ် (15/15)</button></li>
                 <li><button @click="currentTab = 'register'" class="w-full text-left px-3 py-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700">အကောင့်ဖွင့်ရန်</button></li>
             </ul>
@@ -356,11 +381,11 @@
 
         <!-- CONTENT AREA -->
         <main class="flex-1">
-            <!-- HOME & PRODUCTS -->
+            <!-- HOME & PRODUCTS GRID (30 Unique Items) -->
             <div x-show="currentTab === 'home' || currentTab === 'products'">
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                     <template x-for="item in items" :key="item.id">
-                        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm rgb-border overflow-hidden flex flex-col">
+                        <div x-show="activeCategory === 'all' || activeCategory === item.cat" class="bg-white dark:bg-gray-800 rounded-xl shadow-sm rgb-border overflow-hidden flex flex-col">
                             <img :src="item.img" class="h-48 w-full object-cover">
                             <div class="p-4 flex-1 flex flex-col justify-between">
                                 <h4 class="font-bold text-base" x-text="item.title"></h4>
@@ -492,7 +517,6 @@
                     <!-- TAB 1: USERS DATA & EDIT ORDER SYSTEM -->
                     <template x-if="adminTab === 'users'">
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                            <!-- Left Sidebar: Users Search -->
                             <div class="border-r pr-4 space-y-3 dark:border-gray-700">
                                 <input type="text" x-model="adminSearch" placeholder="Search ID / Phone..." class="w-full p-2 text-xs border rounded-lg dark:bg-gray-700">
                                 <div class="space-y-2 max-h-96 overflow-y-auto">
@@ -505,7 +529,6 @@
                                 </div>
                             </div>
 
-                            <!-- Right Details & Order Settings -->
                             <div class="md:col-span-2 space-y-4">
                                 <template x-if="selectedUser">
                                     <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-xl space-y-4 text-sm">
@@ -521,19 +544,17 @@
                                             <p><strong>Balance:</strong> <span class="text-[#2e7d32] font-bold" x-text="'$' + selectedUser.balance.toFixed(2)"></span></p>
                                         </div>
 
-                                        <!-- ORDER MODE SETTING (EDIT ORDER vs AUTO ORDER) -->
                                         <div class="border-t pt-3 border-gray-200 dark:border-gray-600">
                                             <label class="block text-xs font-bold text-gray-700 dark:text-gray-200 mb-2">အော်ဒါ သတ်မှတ်ချက် (Order System Mode):</label>
                                             <div class="flex gap-4 mb-3">
                                                 <label class="flex items-center gap-1.5 text-xs font-bold cursor-pointer">
-                                                    <input type="radio" name="orderMode" value="auto" x-model="selectedUser.orderMode" class="accent-[#2e7d32]"> Auto Order (အလိုအလျောက်)
+                                                    <input type="radio" name="orderMode" value="auto" x-model="selectedUser.orderMode" class="accent-[#2e7d32]"> Auto Order
                                                 </label>
                                                 <label class="flex items-center gap-1.5 text-xs font-bold cursor-pointer">
-                                                    <input type="radio" name="orderMode" value="edit" x-model="selectedUser.orderMode" class="accent-[#2e7d32]"> Edit Order (အော်ဒါ သတ်မှတ်မည်)
+                                                    <input type="radio" name="orderMode" value="edit" x-model="selectedUser.orderMode" class="accent-[#2e7d32]"> Edit Order
                                                 </label>
                                             </div>
 
-                                            <!-- EDIT ORDER AMOUNTS GRID (15 Orders) -->
                                             <div x-show="selectedUser.orderMode === 'edit'" class="space-y-2 bg-white dark:bg-gray-800 p-3 rounded-lg border">
                                                 <span class="text-xs font-bold text-amber-800 dark:text-amber-300 block mb-1">အော်ဒါ ၁၅ ကြိမ်အတွက် ဒေါ်လာပမာဏ သတ်မှတ်ရန်:</span>
                                                 <div class="grid grid-cols-3 sm:grid-cols-5 gap-2">
@@ -555,7 +576,6 @@
                     <!-- TAB 2: CUSTOMER SUPPORT WITH RIGHT USERS LIST & SEARCH -->
                     <template x-if="adminTab === 'service'">
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                            <!-- Chat Area -->
                             <div class="md:col-span-2 bg-gray-50 dark:bg-gray-700 p-4 rounded-xl h-[400px] flex flex-col justify-between">
                                 <div class="border-b pb-2 mb-2 flex justify-between items-center text-xs font-bold text-gray-500">
                                     <span>Chat with: <strong x-text="selectedChatUser ? selectedChatUser.name : 'Select User'"></strong></span>
@@ -568,7 +588,7 @@
                                                 <div :class="msg.sender === 'user' ? 'bg-white dark:bg-gray-800 text-gray-800' : 'bg-[#2e7d32] text-white'" class="max-w-[80%] p-3 rounded-xl text-xs shadow-sm">
                                                     <p x-text="msg.text"></p>
                                                 </div>
-                                                <button @click="deleteChatMessage(selectedChatUser.id, index)" class="opacity-0 group-hover:opacity-100 text-red-500 text-xs px-1" title="Delete message">&times;</button>
+                                                <button @click="deleteChatMessage(selectedChatUser.id, index)" class="opacity-0 group-hover:opacity-100 text-red-500 text-xs px-1">&times;</button>
                                             </div>
                                         </template>
                                     </template>
@@ -579,11 +599,8 @@
                                 </div>
                             </div>
 
-                            <!-- Right Users List with Search -->
                             <div class="space-y-3">
-                                <div class="flex items-center justify-between">
-                                    <span class="text-xs font-bold text-gray-500">အသုံးပြုသူများ စာရင်း</span>
-                                </div>
+                                <span class="text-xs font-bold text-gray-500">အသုံးပြုသူများ စာရင်း</span>
                                 <input type="text" x-model="serviceSearch" placeholder="Search User ID..." class="w-full p-2 text-xs border rounded-lg dark:bg-gray-700">
                                 <div class="space-y-2 max-h-80 overflow-y-auto">
                                     <template x-for="u in usersList.filter(user => user.id.toLowerCase().includes(serviceSearch.toLowerCase()) || user.name.toLowerCase().includes(serviceSearch.toLowerCase()))">
@@ -651,7 +668,7 @@
         </div>
     </div>
 
-    <!-- MOBILE NAVIGATION BAR (NO EMOJIS) -->
+    <!-- MOBILE NAVIGATION BAR -->
     <div class="md:hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 border-t flex justify-around py-3 z-50 text-xs font-semibold rgb-border">
         <button @click="currentTab = 'home'; activeCategory = 'all'" class="flex flex-col items-center text-[#2e7d32]"><span>ပင်မ</span></button>
         <button @click="currentTab = 'ordertask'" class="flex flex-col items-center text-amber-800"><span>အော်ဒါ</span></button>
