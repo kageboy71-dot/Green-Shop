@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Green Shop - Premium E-Commerce Platform</title>
+    <title>Green Shop - Professional E-Commerce Platform</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -44,15 +44,26 @@
             0%, 100% { transform: translateY(0) scale(1); }
             50% { transform: translateY(-20px) scale(1.05); }
         }
-        .glow-box {
-            box-shadow: 0 0 25px rgba(46, 125, 50, 0.8), 0 0 10px rgba(129, 199, 132, 0.5);
+        /* RGB Neon Glowing Border Animation */
+        @keyframes rgbGlow {
+            0% { border-color: #2e7d32; box-shadow: 0 0 15px rgba(46, 125, 50, 0.8), inset 0 0 10px rgba(46, 125, 50, 0.4); }
+            33% { border-color: #00bcd4; box-shadow: 0 0 15px rgba(0, 188, 212, 0.8), inset 0 0 10px rgba(0, 188, 212, 0.4); }
+            66% { border-color: #ffeb3b; box-shadow: 0 0 15px rgba(255, 235, 59, 0.8), inset 0 0 10px rgba(255, 235, 59, 0.4); }
+            100% { border-color: #2e7d32; box-shadow: 0 0 15px rgba(46, 125, 50, 0.8), inset 0 0 10px rgba(46, 125, 50, 0.4); }
+        }
+        .rgb-border {
+            border: 3px solid #2e7d32;
+            animation: rgbGlow 5s infinite linear;
         }
         .premium-btn {
-            background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 50%, #0d3b12 100%);
-            box-shadow: 0 4px 15px rgba(46, 125, 50, 0.4);
+            background: linear-gradient(135deg, #2e7d32 0%, #00bcd4 50%, #ffeb3b 100%);
+            background-size: 200% auto;
+            color: white;
+            font-weight: bold;
+            transition: 0.5s;
         }
         .premium-btn:hover {
-            box-shadow: 0 6px 20px rgba(46, 125, 50, 0.7);
+            background-position: right center;
         }
     </style>
 </head>
@@ -63,79 +74,131 @@
     activeCategory: 'all',
     lang: 'MY', 
     darkMode: false,
-    isLoggedIn: false, 
-    shopName: '', 
-    phone: '', 
-    location: '',
+    isLoggedIn: localStorage.getItem('gs_loggedin') === 'true', 
+    shopName: localStorage.getItem('gs_shopname') || '', 
+    contactInput: localStorage.getItem('gs_contact') || '', 
+    location: localStorage.getItem('gs_location') || 'ရန်ကုန်၊ မြန်မာ (GPS: 16.8661° N, 96.1951° E)',
     password: '',
     referral: '',
-    shopId: 'GS-884920', 
-    inviteCode: 'INV-4921',
-    balanceUSD: 100,
+    termsAgreed: false,
+    shopId: localStorage.getItem('gs_shopid') || 'GS-' + Math.floor(100000 + Math.random() * 900000), 
+    inviteCode: localStorage.getItem('gs_invite') || 'INV-' + Math.floor(1000 + Math.random() * 9000),
+    vipLevel: 'VIP Level 1',
+    balanceUSD: parseFloat(localStorage.getItem('gs_balance')) || 150.00,
     searchQuery: '',
     serviceModal: false,
     alertModal: false,
     alertMessage: '',
     orderModal: false,
+    logoClickCount: 0,
+    adminPortal: false,
+    adminLoggedIn: localStorage.getItem('admin_logged') === 'true',
+    adminPhone: '',
+    adminPass: '',
+    adminTab: 'users',
+    adminSearch: '',
+    selectedUser: null,
     chatInput: '',
     chatMessages: [],
-    orderCount: 0,
+    orderCount: parseInt(localStorage.getItem('gs_orders')) || 0,
     maxOrders: 15,
-    totalProfit: 0,
+    totalProfit: parseFloat(localStorage.getItem('gs_profit')) || 0,
     lastProfit: 0,
     isProcessingOrder: false,
     selectedComment: '',
     currentOrderItem: null,
+    usersList: [
+        { id: 'GS-884920', name: 'Green Enterprise', contact: '09775191427', location: 'ရန်ကုန် (16.8661° N, 96.1951° E)', balance: 150.00, vip: 'VIP Level 2', history: ['+$15.00 (Order #1)', '+$12.50 (Order #2)'] },
+        { id: 'GS-492102', name: 'Royal Fashion', contact: 'mary@gmail.com', location: 'မန္တလေး (21.9588° N, 96.0891° E)', balance: 340.50, vip: 'VIP Level 3', history: ['+$20.00 (Order #1)', '+$18.00 (Order #2)', '+$25.00 (Order #3)'] },
+        { id: 'GS-773190', name: 'Myanmar Silk Hub', contact: '09998877665', location: 'နေပြည်တော် (19.7633° N, 96.0785° E)', balance: 85.00, vip: 'VIP Level 1', history: ['+$10.00 (Order #1)'] }
+    ],
     commentsPool: [
         [
             'အရည်အသွေး အရမ်းကောင်းမွန်ပြီး ချုပ်ရိုးချုပ်သား အထူးသပ်ရပ်ပါတယ်ရှင်။',
             'ပစ္စည်းပို့ဆောင်တာ အရမ်းမြန်ဆန်ပြီး ထုပ်ပိုးမှုလည်း စနစ်ကျပါတယ်။',
             'ဓာတ်ပုံထဲကအတိုင်း ရုပ်ထွက်လှပြီး အရောင်လည်း ငြိမ်ပါတယ်၊ အရမ်းကြိုက်ပါတယ်။',
             'စျေးနှုန်းနဲ့ တန်ဖိုး မျှတမှုရှိပြီး နောက်လည်း ထပ်ဝယ်ဖို့ စိတ်ကူးရှိပါတယ်။',
-            'ဆိုဒ်က အနည်းငယ် သေးနေပေမယ့် အထည်သားနဲ့ ဒီဇိုင်းကတော့ လှပါတယ်။'
+            '⚠️ ဆိုဒ်က အနည်းငယ် သေးနေပေမယ့် အထည်သားနဲ့ ဒီဇိုင်းကတော့ လှပါတယ်။ (လိုချက်အနည်းငယ်ရှိ)'
         ],
         [
             'ဒီဇိုင်းဆန်းသစ်ပြီး ဝတ်ဆင်ရတာ အရမ်း သက်သောင့်သက်သာ ဖြစ်ပါတယ်ရှင်။',
             'ပစ္စည်းမှန် စျေးမှန်ဖြစ်လို့ ယုံကြည်စိတ်ချစွာ ဝယ်ယူနိုင်ပါတယ်။',
             'အရောင်အသွေး တောက်ပြောင်ပြီး ပစ္စည်းစစ်မှန်ကြောင်း အာမခံပါတယ်။',
             'Customer Service ကလည်း ဖော်ရွေပြီး မေးမြန်းတာတွေကို ချက်ချင်း ဖြေပေးပါတယ်။',
-            'ပို့ဆောင်ခ အနည်းငယ် ကြီးပေမယ့် ပစ္စည်း အရည်အသွေးကတော့ ရှယ်ပါပဲ။'
-        ],
-        [
-            'သူငယ်ချင်းတွေကိုပါ ညွှန်းပေးချင်လောက်အောင် သဘောကျပါတယ်ရှင်။',
-            'ထည်ဝါပြီး ပွဲတက်ဖို့အတွက် သီးသန့် အဆင်ပြေစေမယ့် ပစ္စည်းဖြစ်ပါတယ်။',
-            'ပစ္စည်းအရည်အသွေးက မျှော်လင့်ထားတာထက်တောင် ပိုကောင်းနေပါတယ်။',
-            'အရေးပေါ် အသုံးပြုဖို့ တာဝန်ယူ ပို့ပေးခဲ့လို့ အထူးကျေးဇူးတင်ပါတယ်။',
-            'ဗူးလေး အနည်းငယ် ချိုင့်သွားပေမယ့် အတွင်းက ပစ္စည်းကတော့ ထိခိုက်မှုမရှိ အကောင်းအတိုင်း ရပါတယ်။'
+            '⚠️ ပို့ဆောင်ခ အနည်းငယ် ကြီးပေမယ့် ပစ္စည်း အရည်အသွေးကတော့ ရှယ်ပါပဲ။ (လိုချက်အနည်းငယ်ရှိ)'
         ]
     ],
     items: [
-        { id: 1, cat: 'apparel', title: 'Casual Cotton Organic T-Shirt', priceUSD: 14, img: 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=500', liked: false, fav: false },
-        { id: 2, cat: 'apparel', title: 'Classic Button-Down Oxford Shirt', priceUSD: 28, img: 'https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=500', liked: false, fav: false },
-        { id: 3, cat: 'apparel', title: 'Slim Fit Blue Denim Jeans', priceUSD: 36, img: 'https://images.unsplash.com/photo-1542272604-780c36856842?w=500', liked: false, fav: false },
-        { id: 4, cat: 'apparel', title: 'Myanmar Silk Longyi & Traditional Outfit', priceUSD: 45, img: 'https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?w=500', liked: false, fav: false },
-        { id: 5, cat: 'fashion', title: 'Urban Athletic Running Sneakers', priceUSD: 54, img: 'https://images.unsplash.com/photo-1549298916-b41d501d3772?w=500', liked: false, fav: false },
-        { id: 6, cat: 'fashion', title: 'Stiletto High-Heel Party Shoes', priceUSD: 48, img: 'https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=500', liked: false, fav: false },
-        { id: 7, cat: 'fashion', title: 'Vintage Handcrafted Leather Backpack', priceUSD: 62, img: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=500', liked: false, fav: false },
-        { id: 8, cat: 'textiles', title: 'Luxury Egyptian Cotton Bedding Set', priceUSD: 75, img: 'https://images.unsplash.com/photo-1616627547584-bf28cee262db?w=500', liked: false, fav: false },
-        { id: 9, cat: 'general', title: 'Hydrating Botanical Skin Care Kit', priceUSD: 35, img: 'https://images.unsplash.com/photo-1556228720-195a672e8a03?w=500', liked: false, fav: false },
-        { id: 10, cat: 'general', title: 'Luxury French Fragrance Spray Perfume', priceUSD: 60, img: 'https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=500', liked: false, fav: false }
+        { id: 1, cat: 'apparel', title: 'Casual Cotton Organic T-Shirt', priceUSD: 14, img: 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=500' },
+        { id: 2, cat: 'apparel', title: 'Classic Button-Down Oxford Shirt', priceUSD: 28, img: 'https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=500' },
+        { id: 3, cat: 'fashion', title: 'Urban Athletic Running Sneakers', priceUSD: 54, img: 'https://images.unsplash.com/photo-1549298916-b41d501d3772?w=500' },
+        { id: 4, cat: 'textiles', title: 'Luxury Egyptian Cotton Bedding Set', priceUSD: 75, img: 'https://images.unsplash.com/photo-1616627547584-bf28cee262db?w=500' },
+        { id: 5, cat: 'general', title: 'Hydrating Botanical Skin Care Kit', priceUSD: 35, img: 'https://images.unsplash.com/photo-1556228720-195a672e8a03?w=500' }
     ],
     showAlert(msg) {
         this.alertMessage = msg;
         this.alertModal = true;
     },
+    handleLogoClick() {
+        this.logoClickCount++;
+        if(this.logoClickCount >= 7) {
+            this.logoClickCount = 0;
+            this.adminPortal = true;
+        }
+    },
+    adminLoginCheck() {
+        if(this.adminPhone === '09775191427' && this.adminPass === 'Mary1245@') {
+            this.adminLoggedIn = true;
+            localStorage.setItem('admin_logged', 'true');
+            this.showAlert('Admin Portal သို့ အောင်မြင်စွာ ဝင်ရောက်ပါပြီ။');
+        } else {
+            this.showAlert('ဖုန်းနံပါတ် သို့မဟုတ် စကားဝှက် မှားယွင်းနေပါသည်။');
+        }
+    },
+    registerAccount() {
+        if(!this.shopName || !this.contactInput || !this.password) {
+            this.showAlert('ကျေးဇူးပြု၍ လိုအပ်သော အချက်အလက်များကို ဖြည့်စွက်ပါ။');
+            return;
+        }
+        if(!this.termsAgreed) {
+            this.showAlert('ကျေးဇူးပြု၍ ပလက်ဖောင်း စည်းမျဉ်းများကို လက်ခံကြောင်း အမှန်ခြစ် ပေးပါရှင်။');
+            return;
+        }
+        this.isLoggedIn = true;
+        localStorage.setItem('gs_loggedin', 'true');
+        localStorage.setItem('gs_shopname', this.shopName);
+        localStorage.setItem('gs_contact', this.contactInput);
+        localStorage.setItem('gs_shopid', this.shopId);
+        localStorage.setItem('gs_invite', this.inviteCode);
+        localStorage.setItem('gs_location', this.location);
+        localStorage.setItem('gs_balance', this.balanceUSD);
+
+        // Add to mock users list for admin
+        this.usersList.unshift({
+            id: this.shopId,
+            name: this.shopName,
+            contact: this.contactInput,
+            location: this.location,
+            balance: this.balanceUSD,
+            vip: this.vipLevel,
+            history: ['Account Created Successfully']
+        });
+
+        this.currentTab = 'profile';
+        this.showAlert('ဆိုင်အကောင့် အောင်မြင်စွာ ဖွင့်လှစ်ပြီးပါပြီ!');
+    },
     openOrderModal() {
         if(!this.isLoggedIn) {
-            this.showAlert('အော်ဒါတင်ရန် အကောင့်အရင်ဝင်ပေးပါ သို့မဟုတ် အကောင့်ဖွင့်ပေးပါရှင့်။');
+            this.showAlert('အော်ဒါတင်ရန် အကောင့်အရင်ဝင်ပေးပါ သို့မဟုတ် အကောင့်ဖွင့်ပေးပါရှင်။');
+            this.currentTab = 'register';
             return;
         }
         if(this.orderCount >= this.maxOrders) {
-            this.showAlert('ယနေ့အတွက် အော်ဒါ ၁၅ ကြိမ် ကန့်သတ်ချက် ပြည့်သွားပါပြီရှင့်။');
+            this.showAlert('ယနေ့အတွက် အော်ဒါ ၁၅ ကြိမ် ကန့်သတ်ချက် ပြည့်သွားပါပြီရှင်။');
             return;
         }
         if(this.balanceUSD < 10) {
-            this.showAlert('အော်ဒါတင်ရန် ဆိုင်လက်ကျန်ငွေ မလုံလောက်ပါရှင့်။');
+            this.showAlert('အော်ဒါတင်ရန် ဆိုင်လက်ကျန်ငွေ မလုံလောက်ပါ။');
             return;
         }
 
@@ -155,7 +218,7 @@
     },
     confirmOrderSubmit() {
         if(!this.selectedComment) {
-            this.showAlert('ကျေးဇူးပြု၍ မှတ်ချက်တစ်ခု ရွေးချယ်ပေးပါရှင့်။');
+            this.showAlert('ကျေးဇူးပြု၍ မှတ်ချက်တစ်ခု ရွေးချယ်ပေးပါရှင်။');
             return;
         }
         this.orderModal = false;
@@ -167,15 +230,20 @@
             this.lastProfit = profit;
             this.totalProfit += profit;
             this.balanceUSD += profit;
+            
+            localStorage.setItem('gs_orders', this.orderCount);
+            localStorage.setItem('gs_balance', this.balanceUSD);
+            localStorage.setItem('gs_profit', this.totalProfit);
+
             this.isProcessingOrder = false;
-            this.showAlert('အော်ဒါ အောင်မြင်စွာ တင်ပြီးပါပြီ။ အမြတ်ငွေ +$' + profit.toFixed(2) + ' USD ရရှိပါသည်။');
+            this.showAlert('အော်ဒါ အောင်မြင်ပါသည်။ အမြတ်ငွေ +$' + profit.toFixed(2) + ' USD ရရှိပါသည်။');
         }, 1200);
     },
     initLiveChat() {
         if(this.chatMessages.length === 0) {
             this.chatMessages.push({
                 sender: 'bot',
-                text: 'မင်္ဂလာပါရှင့်။ Green shop မှာ ကြိုဆိုပါသည်, ဘာများကူညီပေးရမလဲ ရှင်'
+                text: 'မင်္ဂလာပါရှင့်။ Green shop မှ ကြိုဆိုပါသည်၊ ဘာများ ကူညီပေးရမလဲရှင်။'
             });
         }
     },
@@ -187,25 +255,16 @@
             setTimeout(() => {
                 this.chatMessages.push({
                     sender: 'bot',
-                    text: 'လူကြီးမင်း မေးမြန်းထားသော \'' + userMsg + '\' အတွက် Customer Support မှ မကြာမီ ပြန်လည်ဖြေကြားပေးပါမည်ရှင့်။'
+                    text: 'မေးမြန်းမှုအတွက် ကျေးဇူးတင်ပါသည်ရှင့်။ Admin မှ မကြာမီ အသေးစိတ် ဖြေကြားပေးပါမည်။'
                 });
             }, 1000);
         }
     },
-    handleFileUpload(event, type) {
-        const file = event.target.files[0];
-        if (file) {
-            const mediaUrl = URL.createObjectURL(file);
-            this.chatMessages.push({
-                sender: 'user',
-                text: type === 'photo' ? '📷 ဓာတ်ပုံ ပို့လိုက်ပါသည်:' : '🎥 ဗီဒီယို ဖိုင် ပို့လိုက်ပါသည်:',
-                media: mediaUrl,
-                mediaType: type
-            });
-        }
-    },
     init() {
         setTimeout(() => { this.splash = false; }, 3000);
+        if(this.usersList.length > 0) {
+            this.selectedUser = this.usersList[0];
+        }
     },
     toggleDarkMode() {
         this.darkMode = !this.darkMode;
@@ -225,24 +284,25 @@
             <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight text-white mb-2">
                 Green <span class="text-emerald-200">shop</span>
             </h1>
-            <p class="text-emerald-100 text-base md:text-xl font-medium">Welcome to Green Shop</p>
+            <p class="text-emerald-100 text-base md:text-xl font-medium">Professional E-Commerce Platform</p>
         </div>
     </div>
 
     <!-- MAIN NAVBAR -->
-    <nav class="bg-[#2e7d32] text-white sticky top-0 z-40 shadow-md">
+    <nav class="bg-[#2e7d32] text-white sticky top-0 z-40 shadow-md rgb-border">
         <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
-            <div class="flex items-center space-x-2 cursor-pointer" @click="currentTab = 'home'; activeCategory = 'all'">
+            <!-- Logo Clickable 7 times for Admin/Support portal -->
+            <div @click="handleLogoClick()" class="flex items-center space-x-2 cursor-pointer select-none" title="Green Shop Logo (Click 7 times)">
+                <div class="w-9 h-9 bg-white rounded-full flex items-center justify-center p-1 shadow font-bold text-[#2e7d32]">GS</div>
                 <span class="text-2xl font-extrabold tracking-wide text-white">Green <span class="text-emerald-200 font-bold">shop</span></span>
             </div>
 
             <!-- Header Order Task Button -->
-            <button @click="currentTab = 'ordertask'" class="bg-amber-500 hover:bg-amber-600 text-white font-bold px-3 py-1.5 rounded-lg text-sm shadow flex items-center gap-1">
+            <button @click="currentTab = 'ordertask'" class="premium-btn px-4 py-2 rounded-xl text-sm shadow flex items-center gap-1">
                 <span>📦</span>
                 <span>အော်ဒါတင်ရန်</span>
             </button>
 
-            <!-- Actions Header -->
             <div class="flex items-center space-x-3 text-sm font-medium">
                 <button @click="lang = (lang === 'MY' ? 'EN' : 'MY')" class="px-2.5 py-1 bg-[#1b5e20] rounded font-bold" x-text="lang"></button>
                 <button @click="toggleDarkMode()" class="p-1.5 bg-[#1b5e20] rounded" x-text="darkMode ? '☀️' : '🌙'"></button>
@@ -262,21 +322,22 @@
     <!-- MAIN BODY -->
     <div class="max-w-7xl mx-auto px-4 py-6 flex flex-col md:flex-row gap-6">
         <!-- SIDEBAR -->
-        <aside class="hidden md:block w-64 bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-emerald-100 dark:border-gray-700 p-4 shrink-0 h-fit">
+        <aside class="hidden md:block w-64 bg-white dark:bg-gray-800 rounded-xl shadow-sm rgb-border p-4 shrink-0 h-fit">
             <h3 class="font-bold text-lg mb-4 text-[#2e7d32] dark:text-emerald-400">အမျိုးအစားများ</h3>
             <ul class="space-y-2 text-sm font-medium">
-                <li><button @click="currentTab = 'products'; activeCategory = 'all'" class="w-full text-left px-3 py-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700">ပစ္စည်းအားလုံး</button></li>
+                <li><button @click="currentTab = 'home'; activeCategory = 'all'" class="w-full text-left px-3 py-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700">ပစ္စည်းအားလုံး</button></li>
                 <li><button @click="currentTab = 'ordertask'" class="w-full text-left px-3 py-2 rounded-lg bg-amber-50 text-amber-800 font-bold">📦 အော်ဒါတင်သည့်စနစ် (15/15)</button></li>
+                <li><button @click="currentTab = 'register'" class="w-full text-left px-3 py-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700">👤 အကောင့်ဖွင့်ရန်</button></li>
             </ul>
         </aside>
 
-        <!-- MAIN CONTENT -->
+        <!-- CONTENT AREA -->
         <main class="flex-1">
             <!-- HOME & PRODUCTS -->
             <div x-show="currentTab === 'home' || currentTab === 'products'">
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                     <template x-for="item in items" :key="item.id">
-                        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-emerald-100 overflow-hidden flex flex-col">
+                        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm rgb-border overflow-hidden flex flex-col">
                             <img :src="item.img" class="h-48 w-full object-cover">
                             <div class="p-4 flex-1 flex flex-col justify-between">
                                 <h4 class="font-bold text-base" x-text="item.title"></h4>
@@ -291,9 +352,66 @@
                 </div>
             </div>
 
+            <!-- REGISTER ACCOUNT FORM (အကောင့်ဖွင့်ရန်) -->
+            <div x-show="currentTab === 'register'" class="bg-white dark:bg-gray-800 p-8 rounded-xl max-w-lg mx-auto shadow-sm rgb-border space-y-4">
+                <h3 class="text-2xl font-bold mb-6 text-center text-[#2e7d32]">အကောင့်ဖွင့်မည်</h3>
+                <div class="space-y-3">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 mb-1">ဆိုင်နာမည် (Shop Name)</label>
+                        <input type="text" x-model="shopName" required placeholder="ဆိုင်နာမည် ထည့်ပါ" class="w-full p-2.5 border rounded-lg dark:bg-gray-700">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 mb-1">ဖုန်းနံပါတ် (သို့မဟုတ်) အီးမေးလ်</label>
+                        <input type="text" x-model="contactInput" required placeholder="09xxxxxxxxx သို့ email@gmail.com" class="w-full p-2.5 border rounded-lg dark:bg-gray-700">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 mb-1">စကားဝှက် (Password)</label>
+                        <input type="password" x-model="password" required placeholder="••••••••" class="w-full p-2.5 border rounded-lg dark:bg-gray-700">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 mb-1">ဆိုင်တည်နေရာ (Location)</label>
+                        <input type="text" x-model="location" required class="w-full p-2.5 border rounded-lg dark:bg-gray-700">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 mb-1">ဖိတ်ကြားကုဒ် (Referral Code - Auto)</label>
+                        <input type="text" x-model="inviteCode" readonly class="w-full p-2.5 border rounded-lg bg-gray-100 dark:bg-gray-600 font-mono text-sm">
+                    </div>
+                    <!-- Terms and Conditions Checkbox -->
+                    <div class="flex items-center gap-2 pt-2">
+                        <input type="checkbox" x-model="termsAgreed" id="termsCheck" class="w-4 h-4 accent-[#2e7d32]">
+                        <label for="termsCheck" class="text-xs text-gray-600 dark:text-gray-300">ပလက်ဖောင်း စည်းမျဉ်းစည်းကမ်းများကို လက်ခံပါသည်</label>
+                    </div>
+                    <button @click="registerAccount()" class="w-full premium-btn py-3 rounded-lg font-bold shadow-lg mt-4">အကောင့်ဖွင့်မည်</button>
+                </div>
+            </div>
+
+            <!-- LOGIN TAB -->
+            <div x-show="currentTab === 'login'" class="bg-white dark:bg-gray-800 p-8 rounded-xl max-w-md mx-auto shadow-sm rgb-border">
+                <h3 class="text-2xl font-bold mb-6 text-center text-[#2e7d32]">အကောင့်ဝင်ရန်</h3>
+                <form @submit.prevent="isLoggedIn = true; currentTab = 'profile'; showAlert('အကောင့်ဝင်ရောက်ခြင်း အောင်မြင်ပါသည်။')" class="space-y-4">
+                    <input type="text" placeholder="ဖုန်းနံပါတ် (သို့မဟုတ်) အီးမေးလ်" required class="w-full p-3 border rounded-lg dark:bg-gray-700">
+                    <input type="password" placeholder="စကားဝှက်" required class="w-full p-3 border rounded-lg dark:bg-gray-700">
+                    <button type="submit" class="w-full bg-[#2e7d32] text-white py-3 rounded-lg font-bold">အကောင့်ဝင်မည်</button>
+                </form>
+            </div>
+
+            <!-- PROFILE TAB -->
+            <div x-show="currentTab === 'profile'" class="bg-white dark:bg-gray-800 p-6 rounded-xl max-w-xl mx-auto shadow-sm rgb-border space-y-3">
+                <h3 class="text-xl font-bold mb-4 text-[#2e7d32]">ဆိုင်ပရိုဖိုင် အချက်အလက်</h3>
+                <div class="text-sm space-y-2">
+                    <p><strong>Shop Name:</strong> <span x-text="shopName || 'Green Enterprise'"></span></p>
+                    <p><strong>Shop ID:</strong> <span x-text="shopId" class="font-mono text-emerald-600 font-bold"></span></p>
+                    <p><strong>Invite Code:</strong> <span x-text="inviteCode" class="font-mono"></span></p>
+                    <p><strong>Contact:</strong> <span x-text="contactInput || '09775191427'"></span></p>
+                    <p><strong>Location:</strong> <span x-text="location"></span></p>
+                    <p><strong>VIP Status:</strong> <span class="bg-amber-100 text-amber-800 px-2 py-0.5 rounded font-bold" x-text="vipLevel"></span></p>
+                    <p><strong>Account Balance:</strong> <span class="text-[#2e7d32] font-bold" x-text="'$' + balanceUSD.toFixed(2) + ' USD'"></span></p>
+                </div>
+            </div>
+
             <!-- ORDER TASK TAB -->
             <div x-show="currentTab === 'ordertask'" class="max-w-2xl mx-auto">
-                <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-emerald-100 dark:border-gray-700 text-center">
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm rgb-border text-center">
                     <h3 class="text-xl font-bold text-[#2e7d32] mb-2">📦 Daily Order Task System</h3>
                     <p class="text-xs text-gray-500 mb-6">တစ်နေ့လျှင် ၁၅ ကြိမ်အထိ အော်ဒါတင်ပြီး အမြတ်ငွေ ရယူပါ</p>
 
@@ -312,78 +430,134 @@
                         </div>
                     </div>
 
-                    <!-- PREMIUM ORDER BUTTON -->
                     <button @click="openOrderModal()" 
                             :disabled="isProcessingOrder || orderCount >= maxOrders" 
-                            class="premium-btn text-white font-extrabold text-lg px-8 py-4 rounded-2xl transition transform hover:scale-105 active:scale-95 border-2 border-emerald-400 flex items-center justify-center gap-2 mx-auto w-full sm:w-auto">
+                            class="premium-btn text-white font-extrabold text-lg px-8 py-4 rounded-2xl shadow-lg transition transform hover:scale-105 w-full sm:w-auto">
                         <span x-show="!isProcessingOrder">✨ အော်ဒါ တင်မည် (Start Order Task)</span>
-                        <span x-show="isProcessingOrder" class="animate-spin">⏳</span>
+                        <span x-show="isProcessingOrder">⏳ လုပ်ဆောင်နေပါသည်...</span>
                     </button>
                 </div>
-            </div>
-
-            <!-- LOGIN TAB -->
-            <div x-show="currentTab === 'login'" class="bg-white dark:bg-gray-800 p-8 rounded-xl max-w-md mx-auto shadow-sm border">
-                <h3 class="text-2xl font-bold mb-6 text-center text-[#2e7d32]">အကောင့်ဝင်ရန်</h3>
-                <form @submit.prevent="isLoggedIn = true; currentTab = 'profile'; showAlert('အကောင့်ဝင်ရောက်ခြင်း အောင်မြင်ပါသည်။')" class="space-y-4">
-                    <input type="tel" placeholder="ဖုန်းနံပါတ်" required class="w-full p-3 border rounded-lg dark:bg-gray-700">
-                    <input type="password" placeholder="စကားဝှက်" required class="w-full p-3 border rounded-lg dark:bg-gray-700">
-                    <button type="submit" class="w-full bg-[#2e7d32] text-white py-3 rounded-lg font-bold">အကောင့်ဝင်မည်</button>
-                </form>
-            </div>
-
-            <!-- REGISTER TAB -->
-            <div x-show="currentTab === 'register'" class="bg-white dark:bg-gray-800 p-8 rounded-xl max-w-md mx-auto shadow-sm border">
-                <h3 class="text-2xl font-bold mb-6 text-center text-[#2e7d32]">အကောင့်ဖွင့်မည်</h3>
-                <form @submit.prevent="isLoggedIn = true; currentTab = 'profile'; showAlert('အကောင့်ဖွင့်ခြင်း အောင်မြင်ပါသည်။')" class="space-y-4">
-                    <input type="text" x-model="shopName" required placeholder="ဆိုင်နာမည်" class="w-full p-2.5 border rounded-lg dark:bg-gray-700">
-                    <input type="tel" x-model="phone" required placeholder="ဖုန်းနံပါတ်" class="w-full p-2.5 border rounded-lg dark:bg-gray-700">
-                    <input type="password" x-model="password" required placeholder="စကားဝှက်" class="w-full p-2.5 border rounded-lg dark:bg-gray-700">
-                    <button type="submit" class="w-full bg-[#2e7d32] text-white py-3 rounded-lg font-bold">အကောင့်ဖွင့်မည်</button>
-                </form>
-            </div>
-
-            <!-- PROFILE TAB -->
-            <div x-show="currentTab === 'profile'" class="bg-white dark:bg-gray-800 p-6 rounded-xl max-w-xl mx-auto shadow-sm border">
-                <h3 class="text-xl font-bold mb-4 text-[#2e7d32]">ဆိုင်ပရိုဖိုင် အချက်အလက်</h3>
-                <p><strong>Shop Name:</strong> <span x-text="shopName || 'Green Enterprise'"></span></p>
-                <p><strong>Shop ID:</strong> <span x-text="shopId" class="font-mono"></span></p>
             </div>
         </main>
     </div>
 
-    <!-- 1. CUSTOM NEON GLOW ALERT MODAL (အလယ်က ဘောင်လေးနဲ့ မီးလင်းနေသော စာတို) -->
-    <div x-show="alertModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-[100]" x-cloak>
-        <div class="bg-white dark:bg-gray-800 border-2 border-emerald-400 glow-box rounded-2xl max-w-sm w-full p-6 text-center transform transition-all space-y-4">
-            <div class="w-12 h-12 bg-emerald-100 text-[#2e7d32] rounded-full flex items-center justify-center mx-auto text-2xl font-bold">🔔</div>
-            <p class="text-sm md:text-base font-semibold text-gray-800 dark:text-gray-100" x-text="alertMessage"></p>
-            <button @click="alertModal = false" class="bg-[#2e7d32] hover:bg-[#1b5e20] text-white px-6 py-2 rounded-xl font-bold text-sm shadow-md transition">လက်ခံသည် (OK)</button>
+    <!-- SECRET ADMIN & CUSTOMER SERVICE PORTAL (Triggered by 7 clicks on Logo) -->
+    <div x-show="adminPortal" class="fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 z-[200]" x-cloak>
+        <div class="bg-white dark:bg-gray-800 rgb-border rounded-2xl max-w-4xl w-full p-6 space-y-6 max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center border-b pb-3 border-gray-200 dark:border-gray-700">
+                <h3 class="text-xl font-extrabold text-[#2e7d32]">🔐 Green Shop - Admin & Customer Service Portal</h3>
+                <button @click="adminPortal = false" class="text-gray-400 hover:text-red-500 font-bold text-2xl">&times;</button>
+            </div>
+
+            <!-- Admin Login Gate -->
+            <template x-if="!adminLoggedIn">
+                <div class="max-w-md mx-auto space-y-4 py-8 text-center">
+                    <h4 class="font-bold text-lg text-gray-700 dark:text-gray-200">Admin ဝင်ရောက်ရန် လိုအပ်ပါသည်</h4>
+                    <input type="text" x-model="adminPhone" placeholder="Admin ဖုန်းနံပါတ် (09775191427)" class="w-full p-3 border rounded-lg dark:bg-gray-700">
+                    <input type="password" x-model="adminPass" placeholder="စကားဝှက် (Mary1245@)" class="w-full p-3 border rounded-lg dark:bg-gray-700">
+                    <button @click="adminLoginCheck()" class="w-full premium-btn py-3 rounded-lg font-bold shadow-lg">ဝင်မည် (Login)</button>
+                </div>
+            </template>
+
+            <!-- Admin Dashboard Content -->
+            <template x-if="adminLoggedIn">
+                <div class="space-y-4">
+                    <!-- Admin Top Switch Buttons -->
+                    <div class="flex gap-3 border-b pb-3 border-gray-200 dark:border-gray-700">
+                        <button @click="adminTab = 'users'" :class="adminTab === 'users' ? 'bg-[#2e7d32] text-white' : 'bg-gray-100 dark:bg-gray-700'" class="px-4 py-2 rounded-lg font-bold text-sm">👥 ဖောက်သည်အချက်အလက်များ (Admin)</button>
+                        <button @click="adminTab = 'service'" :class="adminTab === 'service' ? 'bg-[#2e7d32] text-white' : 'bg-gray-100 dark:bg-gray-700'" class="px-4 py-2 rounded-lg font-bold text-sm">🎧 ကားစတားမား ဆားဗစ် (Customer Service)</button>
+                    </div>
+
+                    <!-- TAB 1: USERS DATA & GPS LOCATION -->
+                    <template x-if="adminTab === 'users'">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <!-- Users List Sidebar with Search -->
+                            <div class="border-r pr-4 space-y-3 dark:border-gray-700">
+                                <input type="text" x-model="adminSearch" placeholder="ဖောက်သည် ရှာရန် (Search ID)..." class="w-full p-2 text-xs border rounded-lg dark:bg-gray-700">
+                                <div class="space-y-2 max-h-96 overflow-y-auto">
+                                    <template x-for="user in usersList.filter(u => u.name.toLowerCase().includes(adminSearch.toLowerCase()) || u.id.toLowerCase().includes(adminSearch.toLowerCase()))">
+                                        <div @click="selectedUser = user" :class="selectedUser && selectedUser.id === user.id ? 'bg-emerald-100 dark:bg-gray-700 border-[#2e7d32]' : 'hover:bg-gray-50 dark:hover:bg-gray-700 border-gray-200'" class="p-3 rounded-xl border cursor-pointer transition">
+                                            <div class="font-bold text-sm" x-text="user.name"></div>
+                                            <div class="text-xs text-gray-500 font-mono" x-text="user.id"></div>
+                                        </div>
+                                    </template>
+                                </div>
+                            </div>
+
+                            <!-- Selected User Full Details -->
+                            <div class="md:col-span-2 space-y-4">
+                                <template x-if="selectedUser">
+                                    <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-xl space-y-3 text-sm">
+                                        <h4 class="font-bold text-base text-[#2e7d32]" x-text="selectedUser.name + ' အသေးစိတ် အချက်အလက်'"></h4>
+                                        <p><strong>အကောင့် အိုင်ဒီ (Shop ID):</strong> <span x-text="selectedUser.id" class="font-mono"></span></p>
+                                        <p><strong>ဖုန်းနံပါတ် / အီးမေးလ်:</strong> <span x-text="selectedUser.contact"></span></p>
+                                        <p><strong>ဖုန်းတည်နေရာ အတိအကျ (GPS Location):</strong> <span class="text-blue-600 font-semibold" x-text="selectedUser.location"></span></p>
+                                        <p><strong>အကောင့်လက်ကျန်:</strong> <span class="text-[#2e7d32] font-bold" x-text="'$' + selectedUser.balance.toFixed(2) + ' USD'"></span></p>
+                                        <p><strong>VIP အဆင့်:</strong> <span class="text-amber-600 font-bold" x-text="selectedUser.vip"></span></p>
+                                        
+                                        <div>
+                                            <strong class="block mb-1">ငွေသွင်းငွေထုတ် မှတ်တမ်းများ (History):</strong>
+                                            <ul class="list-disc pl-5 text-xs space-y-1 text-gray-600 dark:text-gray-300">
+                                                <template x-for="hist in selectedUser.history">
+                                                    <li x-text="hist"></li>
+                                                </template>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </template>
+                            </div>
+                        </div>
+                    </template>
+
+                    <!-- TAB 2: CUSTOMER SERVICE CHAT PANEL -->
+                    <template x-if="adminTab === 'service'">
+                        <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-xl h-[400px] flex flex-col justify-between">
+                            <div class="flex-1 overflow-y-auto space-y-3 pr-2">
+                                <div class="bg-white dark:bg-gray-800 p-3 rounded-xl max-w-[80%] text-sm shadow-sm">
+                                    မင်္ဂလာပါရှင်။ Green shop မှ ကြိုဆိုပါသည်၊ ဘာများ ကူညီပေးရမလဲရှင်။
+                                </div>
+                            </div>
+                            <div class="flex gap-2 pt-3 border-t border-gray-200 dark:border-gray-600">
+                                <input type="text" placeholder="စာပြန်ရန် ရိုက်ထည့်ပါ..." class="flex-1 p-2 text-sm border rounded-lg dark:bg-gray-800">
+                                <button onclick="alert('စာပေးပို့ပြီးပါပြီ')" class="bg-[#2e7d32] text-white px-4 py-2 rounded-lg text-sm font-bold">ပို့မည်</button>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </template>
         </div>
     </div>
 
-    <!-- 2. ORDER REVIEW & RATING SELECTION MODAL (အော်ဒါတင်ရန် မှတ်ချက် ရွေးချယ်သည့် ဘောင်) -->
-    <div x-show="orderModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-[90]" x-cloak>
-        <div class="bg-white dark:bg-gray-800 border-2 border-emerald-400 glow-box rounded-2xl max-w-md w-full p-6 space-y-4 text-left max-h-[90vh] overflow-y-auto">
+    <!-- 1. CUSTOM NEON GLOW ALERT MODAL -->
+    <div x-show="alertModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-[250]" x-cloak>
+        <div class="bg-white dark:bg-gray-800 rgb-border rounded-2xl max-w-sm w-full p-6 text-center space-y-4">
+            <div class="w-12 h-12 bg-emerald-100 text-[#2e7d32] rounded-full flex items-center justify-center mx-auto text-2xl font-bold">🔔</div>
+            <p class="text-sm md:text-base font-semibold text-gray-800 dark:text-gray-100" x-text="alertMessage"></p>
+            <button @click="alertModal = false" class="premium-btn px-6 py-2 rounded-xl text-sm shadow-md">လက်ခံသည် (OK)</button>
+        </div>
+    </div>
+
+    <!-- 2. ORDER REVIEW & RATING SELECTION MODAL -->
+    <div x-show="orderModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-[150]" x-cloak>
+        <div class="bg-white dark:bg-gray-800 rgb-border rounded-2xl max-w-md w-full p-6 space-y-4 text-left max-h-[90vh] overflow-y-auto">
             <div class="flex justify-between items-center border-b pb-3 border-gray-100 dark:border-gray-700">
                 <h4 class="font-bold text-lg text-[#2e7d32]">📦 အော်ဒါ အသေးစိတ် စစ်ဆေးရန်</h4>
                 <button @click="orderModal = false" class="text-gray-400 hover:text-red-500 font-bold text-xl">&times;</button>
             </div>
 
-            <!-- Item & Rating Info -->
             <template x-if="currentOrderItem">
                 <div class="space-y-4">
                     <div class="flex items-center gap-3 bg-[#f1f8f2] dark:bg-gray-700 p-3 rounded-xl">
                         <img :src="currentOrderItem.img" class="w-16 h-16 object-cover rounded-lg">
                         <div>
                             <h5 class="font-bold text-sm text-gray-800 dark:text-gray-100" x-text="currentOrderItem.title"></h5>
-                            <div class="text-xs text-[#2e7d32] dark:text-emerald-400 font-extrabold mt-0.5" x-text="'$' + currentOrderItem.priceUSD + ' USD'"></div>
+                            <div class="text-xs text-[#2e7d32] font-extrabold mt-0.5" x-text="'$' + currentOrderItem.priceUSD + ' USD'"></div>
                             <div class="text-xs text-amber-500 font-bold mt-1">⭐ Rating: <span x-text="currentOrderItem.rating"></span> / 5.0</div>
                         </div>
                     </div>
 
-                    <!-- Comments Selection (5 Options) -->
                     <div>
-                        <label class="block text-xs font-bold text-gray-500 uppercase mb-2">မှတ်ချက် ၁ ကြောင်း ရွေးချယ်ပါ (Select Review):</label>
+                        <label class="block text-xs font-bold text-gray-500 uppercase mb-2">မှတ်ချက် ၁ ကြောင်း ရွေးချယ်ပါ (အဆိုး/အကောင်း ပါဝင်သည်):</label>
                         <div class="space-y-2">
                             <template x-for="(comment, index) in currentOrderItem.comments" :key="index">
                                 <label class="flex items-start gap-2.5 p-2.5 rounded-lg border text-xs cursor-pointer transition"
@@ -395,46 +569,17 @@
                         </div>
                     </div>
 
-                    <!-- Confirm Button -->
-                    <button @click="confirmOrderSubmit()" class="w-full bg-[#2e7d32] hover:bg-[#1b5e20] text-white font-bold py-3 rounded-xl shadow-lg transition">အတည်ပြု၍ အော်ဒါတင်မည်</button>
+                    <button @click="confirmOrderSubmit()" class="w-full premium-btn py-3 rounded-xl shadow-lg font-bold">အတည်ပြု၍ အော်ဒါတင်မည်</button>
                 </div>
             </template>
         </div>
     </div>
 
-    <!-- LIVE CHAT SERVICE MODAL -->
-    <div x-show="serviceModal" class="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50" x-cloak>
-        <div class="bg-white dark:bg-gray-800 rounded-2xl max-w-md w-full shadow-2xl overflow-hidden flex flex-col h-[520px]">
-            <div class="bg-[#2e7d32] text-white p-4 flex justify-between items-center">
-                <div class="flex items-center space-x-2">
-                    <span class="text-2xl">🎧</span>
-                    <h4 class="font-bold text-base">Green Shop Support</h4>
-                </div>
-                <button @click="serviceModal = false" class="text-white hover:text-red-300 font-bold text-xl">&times;</button>
-            </div>
-            <div class="flex-1 p-4 overflow-y-auto space-y-3 bg-gray-50 dark:bg-gray-900">
-                <template x-for="(msg, index) in chatMessages" :key="index">
-                    <div :class="msg.sender === 'user' ? 'flex justify-end' : 'flex justify-start'">
-                        <div :class="msg.sender === 'user' ? 'bg-[#2e7d32] text-white rounded-l-xl rounded-tr-xl' : 'bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 border rounded-r-xl rounded-tl-xl'" class="max-w-[80%] p-3 text-sm shadow-sm space-y-2">
-                            <p x-text="msg.text"></p>
-                        </div>
-                    </div>
-                </template>
-            </div>
-            <div class="p-3 bg-white dark:bg-gray-800 border-t flex items-center gap-2">
-                <input type="text" x-model="chatInput" @keyup.enter="sendMessage()" placeholder="စာရိုက်ပါ..." class="flex-1 p-2 text-sm border rounded-lg dark:bg-gray-700">
-                <button @click="chatInput = ''" class="p-2 text-red-500 font-extrabold text-base">✖</button>
-                <button @click="sendMessage()" class="bg-[#2e7d32] text-white px-3 py-2 rounded-lg text-sm font-bold">Send</button>
-            </div>
-        </div>
-    </div>
-
     <!-- MOBILE NAVIGATION BAR -->
-    <div class="md:hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 border-t flex justify-around py-3 z-50 text-xs font-semibold">
+    <div class="md:hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 border-t flex justify-around py-3 z-50 text-xs font-semibold rgb-border">
         <button @click="currentTab = 'home'; activeCategory = 'all'" class="flex flex-col items-center text-[#2e7d32]">🏠<span>ပင်မ</span></button>
         <button @click="currentTab = 'ordertask'" class="flex flex-col items-center text-amber-600">📦<span>အော်ဒါ</span></button>
-        <button @click="serviceModal = true; initLiveChat();" class="flex flex-col items-center text-gray-600">🎧<span>ဆာဗစ်</span></button>
-        <button @click="if(!isLoggedIn){ currentTab = 'register'; } else { currentTab = 'profile'; }" class="flex flex-col items-center text-gray-600">👤<span>ပရိုဖိုင်</span></button>
+        <button @click="currentTab = 'register'" class="flex flex-col items-center text-gray-600">👤<span>အကောင့်</span></button>
     </div>
 
 </body>
