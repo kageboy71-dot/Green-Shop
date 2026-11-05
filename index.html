@@ -26,12 +26,12 @@
     </script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <style>
+        [x-cloak] { display: none !important; }
         .green-bubble-bg {
             background: radial-gradient(circle at 20% 20%, #81c784 0%, #388e3c 40%, #1b5e20 80%, #0d3b12 100%);
             position: relative;
             overflow: hidden;
         }
-        /* Fast Floating Bubbles Animation (43% speed) */
         .bubble {
             position: absolute;
             border-radius: 50%;
@@ -47,7 +47,6 @@
             80% { opacity: 0.9; }
             100% { transform: translateY(-120vh) scale(1.3); opacity: 0; }
         }
-        /* Multi-color fast rotating spinner */
         @keyframes multiSpin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
@@ -63,7 +62,6 @@
             border-radius: 50%;
             animation: multiSpin 0.8s linear infinite;
         }
-        /* Marquee right to left */
         @keyframes marquee {
             0% { transform: translateX(100%); }
             100% { transform: translateX(-100%); }
@@ -99,7 +97,7 @@
     lang: 'MY', 
     darkMode: false,
     isLoggedIn: localStorage.getItem('gs_loggedin') === 'true', 
-    shopName: localStorage.getItem('gs_shopname'] || '', 
+    shopName: localStorage.getItem('gs_shopname') || '', 
     contactInput: localStorage.getItem('gs_contact') || '', 
     location: localStorage.getItem('gs_location') || 'ရန်ကုန်၊ မြန်မာ (GPS: 16.8661° N, 96.1951° E)',
     password: '',
@@ -110,7 +108,6 @@
     vipLevel: 'VIP Level 1',
     balanceUSD: parseFloat(localStorage.getItem('gs_balance')) || 150.00,
     searchQuery: '',
-    serviceModal: false,
     alertModal: false,
     alertMessage: '',
     orderModal: false,
@@ -279,7 +276,7 @@
     initLiveChat() {
         if(!this.chatMessages[this.shopId]) {
             this.chatMessages[this.shopId] = [
-                { sender: 'bot', text: 'မင်္ဂလာပါရှင့်။ Green shop မှ ကြိုဆိုပါသည်၊ ဘာများ ကူညီပေးရမလဲရှင်။' }
+                { sender: 'bot', text: 'မင်္ဂလာပါရှင်။ Green shop မှ ကြိုဆိုပါသည်၊ ဘာများ ကူညီပေးရမလဲရှင်။' }
             ];
             localStorage.setItem('gs_chat', JSON.stringify(this.chatMessages));
         }
@@ -301,7 +298,6 @@
         }
     },
     init() {
-        // 2.5 seconds loading splash
         setTimeout(() => { this.splash = false; }, 2500);
         if(this.usersList.length > 0) {
             this.selectedUser = this.usersList[0];
@@ -319,17 +315,15 @@
     }
 }">
 
-    <!-- SPLASH SCREEN (2.5s duration, fast bubbles, multi-color rotating logo, marquee welcome) -->
+    <!-- SPLASH SCREEN -->
     <div x-show="splash" class="fixed inset-0 green-bubble-bg z-[100] flex flex-col items-center justify-center text-white p-4 overflow-hidden">
-        <!-- Fast Floating Bubbles -->
-        <div class="bubble w-20 h-20 left-[10%] animation-delay-0"></div>
+        <div class="bubble w-20 h-20 left-[10%]"></div>
         <div class="bubble w-32 h-32 left-[30%]"></div>
         <div class="bubble w-16 h-16 left-[55%]"></div>
         <div class="bubble w-24 h-24 left-[75%]"></div>
         <div class="bubble w-28 h-28 left-[90%]"></div>
 
         <div class="relative z-10 text-center flex flex-col items-center space-y-4">
-            <!-- Multi-color rotating spinner around logo -->
             <div class="relative flex items-center justify-center w-24 h-24">
                 <div class="absolute inset-0 multi-spinner"></div>
                 <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center font-bold text-[#2e7d32] text-xl shadow-xl">GS</div>
@@ -339,7 +333,6 @@
                 Green <span class="text-emerald-200">shop</span>
             </h1>
 
-            <!-- Right to Left Marquee Welcome Text -->
             <div class="w-72 overflow-hidden py-1">
                 <div class="marquee-text text-emerald-100 text-lg font-bold tracking-wide">
                     Welcome to Green Shop - Professional E-Commerce Platform
@@ -447,7 +440,7 @@
                 </div>
             </div>
 
-            <!-- 3. HISTORY TAB (မှတ်တမ်း) -->
+            <!-- 3. HISTORY TAB -->
             <div x-show="currentTab === 'history'" class="bg-white dark:bg-gray-800 p-6 rounded-xl max-w-xl mx-auto shadow-sm rgb-border space-y-4">
                 <h3 class="text-xl font-bold text-[#2e7d32]">ငွေသွင်းငွေထုတ်နှင့် အော်ဒါ မှတ်တမ်း</h3>
                 <div class="space-y-2 text-xs">
@@ -476,7 +469,7 @@
                 </div>
             </div>
 
-            <!-- REGISTER ACCOUNT FORM -->
+            <!-- REGISTER FORM -->
             <div x-show="currentTab === 'register'" class="bg-white dark:bg-gray-800 p-8 rounded-xl max-w-lg mx-auto shadow-sm rgb-border space-y-4">
                 <h3 class="text-2xl font-bold mb-6 text-center text-[#2e7d32]">အကောင့်ဖွင့်မည်</h3>
                 <div class="space-y-3">
@@ -661,7 +654,7 @@
         </div>
     </div>
 
-    <!-- MOBILE BOTTOM NAVIGATION BAR (5 Buttons: Home, ပစ္စည်းများ, Test, မှတ်တမ်း, ပရိုဖိုင်) -->
+    <!-- MOBILE BOTTOM NAVIGATION BAR -->
     <div class="md:hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 border-t flex justify-around py-3 z-50 text-xs font-semibold rgb-border">
         <button @click="currentTab = 'home'; activeCategory = 'all'" class="flex flex-col items-center text-[#2e7d32]">
             <span>🏠</span>
